@@ -9,6 +9,11 @@ export default class Request {
           axios
             .get(url, {
               params: data,
+              headers: {
+                Authorization: localStorage.getItem("token")
+                  ? localStorage.getItem("token")
+                  : null,
+              },
             })
             .then((res) => {
               if (res) {
@@ -25,16 +30,10 @@ export default class Request {
             method: method,
             url: url,
             data: data,
-            transformRequest: (data) => {
-              let ret = "";
-              for (let it in data) {
-                ret +=
-                  encodeURIComponent(it) +
-                  "=" +
-                  encodeURIComponent(data[it]) +
-                  "&";
-              }
-              return ret;
+            headers: {
+              Authorization: localStorage.getItem("token")
+                ? localStorage.getItem("token")
+                : null,
             },
           }).then((res) => {
             if (res) {
@@ -48,6 +47,11 @@ export default class Request {
           axios
             .delete(url, {
               data: data,
+              headers: {
+                Authorization: localStorage.getItem("token")
+                  ? localStorage.getItem("token")
+                  : null,
+              },
             })
             .then((res) => {
               // 后台已RequestBody接收

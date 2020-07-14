@@ -17,6 +17,9 @@ import store from "../redux/store";
 
 //异步加载组件
 const Home = asyncLoader(() => import("../views/layout/Home"));
+const Qzhome = asyncLoader(() => import("../views/quanzi/Home"));
+const Login = asyncLoader(() => import("../views/account/Login"));
+const Register = asyncLoader(() => import("../views/account/Register"));
 const Demo1 = asyncLoader(() => import("../views/demo/Demo1"));
 const Demo2 = asyncLoader(() => import("../views/demo/Demo2"));
 const Demo3 = asyncLoader(() => import("../views/demo/Demo3"));
@@ -26,8 +29,11 @@ export default () => (
   <Provider store={store}>
     <Router>
       <Switch>
-        <Route exact path="/" render={() => <Redirect to="/home" />} />
+        <Route exact path="/" render={() => <Redirect to="/Login" />} />
+        <Route exact path="/Login" component={withRouter(Login)} />
+        <Route exact path="/Register" component={withRouter(Register)} />
         <Route exact path="/home" component={withRouter(Home)} />
+        <Route exact path="/qzhome" component={withRouter(Qzhome)} />
         <Route exact path="/demo1" component={withRouter(Demo1)} />
         <Route exact path="/demo2" component={withRouter(Demo2)} />
         <Route exact path="/demo3" component={withRouter(Demo3)} />

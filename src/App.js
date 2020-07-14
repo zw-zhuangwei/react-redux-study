@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./index.css";
+import "./App.css";
 
 import NavRouter from "./router";
 
@@ -11,7 +12,6 @@ export default class RouterManager extends Component {
   render() {
     return (
       <>
-        <div>欢迎访问 ****************</div>
         <NavRouter />
       </>
     );

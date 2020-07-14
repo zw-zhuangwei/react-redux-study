@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import IO from "socket.io-client";
 import styled from "styled-components";
 import BraftEditor from "braft-editor";
@@ -12,7 +12,9 @@ const Wrapper = styled.section`
     overflow: auto;
   }
   .braft-editor-area {
-    position: absolute;
+    position: relative;
+    top: 0;
+    right: 0;
     bottom: 10px;
     width: 100%;
     .braft-editor {
@@ -32,16 +34,30 @@ const Wrapper = styled.section`
   }
 `;
 
-export default class Demo2 extends Component {
+export default class Chat extends Component {
   constructor(props) {
     super(props);
 
-    let socket = IO("http://localhost:3000");
+    this.state = {
+      controls: ["bold", "italic", "underline", "emoji"],
+      editorState: BraftEditor.createEditorState(null),
+      chatMsg: [],
+      scrollTo: null,
+      chatHeight: props.height,
+    };
 
+    let socket = IO(
+      `http://localhost:3000?token=${localStorage.getItem("token")}`
+    );
     socket.on("connect", () => {
-      socket.on("response", (data) => {
+      socket.on("response", (res) => {
+        if (res.type === 401) {
+          message.error(res.message);
+          return false;
+        }
+
         this.setState({
-          chatMsg: [...this.state.chatMsg, data],
+          chatMsg: [...this.state.chatMsg, res],
         });
 
         this.scrollTo = this.scrollTo
@@ -51,7 +67,6 @@ export default class Demo2 extends Component {
       });
 
       socket.on("broadcast", (data) => {
-        console.log(data);
         this.setState({
           chatMsg: [...this.state.chatMsg, data],
         });
@@ -65,13 +80,6 @@ export default class Demo2 extends Component {
 
     this.socket = socket;
   }
-
-  state = {
-    controls: ["bold", "italic", "underline", "emoji"],
-    editorState: BraftEditor.createEditorState(null),
-    chatMsg: [],
-    scrollTo: null,
-  };
 
   _handleEditorChange = (editorState) => {
     this.setState({ editorState });
@@ -101,12 +109,16 @@ export default class Demo2 extends Component {
   }
 
   render() {
-    const { controls, editorState, chatMsg } = this.state;
+    const { controls, editorState, chatMsg, chatHeight } = this.state;
     return (
       <Wrapper>
-        <div id="chat-show-area" className="chat-show-area">
+        <div
+          id="chat-show-area"
+          className="chat-show-area"
+          style={{ height: chatHeight - 80 + "px" }}
+        >
           {chatMsg.map((v, i) => {
-            return <div key={i}>{v}</div>;
+            return <div key={i}>{v.data.content}</div>;
           })}
         </div>
         <div className="braft-editor-area">
