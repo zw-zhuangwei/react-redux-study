@@ -33,7 +33,7 @@ export default () => (
         <Route exact path="/Login" component={withRouter(Login)} />
         <Route exact path="/Register" component={withRouter(Register)} />
         <Route exact path="/home" component={withRouter(Home)} />
-        <Route exact path="/qzhome" component={withRouter(Qzhome)} />
+        <Route exact path="/qzhome/:rid" component={withRouter(Qzhome)} />
         <Route exact path="/demo1" component={withRouter(Demo1)} />
         <Route exact path="/demo2" component={withRouter(Demo2)} />
         <Route exact path="/demo3" component={withRouter(Demo3)} />

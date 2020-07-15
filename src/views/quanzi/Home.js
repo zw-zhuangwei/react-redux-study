@@ -40,7 +40,7 @@ class Qzhome extends Component {
     return (
       <Wrapper className="qz-home">
         <header className="qz-header">
-          <LayHeader />
+          <LayHeader history={this.props.history} />
         </header>
 
         <div className="qz-container">

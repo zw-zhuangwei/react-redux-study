@@ -9,7 +9,7 @@ import {
   EyeTwoTone,
 } from "@ant-design/icons";
 
-import { login, updateFace } from "../../api/account";
+import { login } from "../../api/account";
 
 const Wrapper = styled.section`
   padding: 4em;
@@ -111,7 +111,7 @@ class Login extends Component {
       if (res.code === 200) {
         localStorage.setItem("userInfo", JSON.stringify(res.data.user));
         localStorage.setItem("token", res.data.token);
-        this.props.history.push("/qzhome");
+        this.props.history.push(`/qzhome/${res.data.user.uid}`);
         message.success(res.message);
       } else {
         message.error(res.message);

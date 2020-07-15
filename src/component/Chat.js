@@ -10,6 +10,58 @@ const Wrapper = styled.section`
     height: calc(100vh - 100px);
     border: 1px solid #ff5256;
     overflow: auto;
+    padding: 10px;
+    .sys-broadcast {
+      text-align: center;
+      color: #94941f;
+      font-size: 12px;
+    }
+    .chat-msg {
+      .chat-msg-other {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 8px;
+        .user-avatar {
+          border-radius: 20px;
+        }
+        .chat-owner {
+          display: block;
+          font-size: 12px;
+          text-align: center;
+          color: #ff5256;
+        }
+        .chat-content {
+          margin-left: 7px;
+          word-break: break-all;
+          .user-name {
+            color: #001fffa1;
+          }
+        }
+      }
+      .chat-msg-self {
+        display: flex;
+        flex-direction: row-reverse;
+        margin-bottom: 8px;
+        .user-avatar {
+          border-radius: 20px;
+        }
+        .chat-owner {
+          display: block;
+          font-size: 12px;
+          text-align: center;
+          color: #ff5256;
+        }
+        .chat-content {
+          margin-right: 7px;
+          word-break: break-all;
+          .user-name {
+            color: #001fffa1;
+            display: block;
+            text-align: right;
+          }
+        }
+      }
+    }
   }
   .braft-editor-area {
     position: relative;
@@ -33,7 +85,68 @@ const Wrapper = styled.section`
     }
   }
 `;
-
+let userInfo = null;
+function RenderChat(props) {
+  userInfo = userInfo ? userInfo : JSON.parse(localStorage.getItem("userInfo"));
+  let { chatMsg } = props;
+  return (
+    <>
+      {chatMsg.map((v, i) => {
+        if (v.type === 100) {
+          return (
+            <div key={i} className="sys-broadcast">
+              {v.data.content}
+            </div>
+          );
+        } else {
+          return (
+            <div key={i} className="chat-msg">
+              {v.data.user.uid !== userInfo.uid ? (
+                <div className="chat-msg-other">
+                  <div>
+                    <img
+                      className="user-avatar"
+                      alt="图片"
+                      src={v.data.user.avatar}
+                      width="40"
+                      height="40"
+                    />
+                    {v.data.user.owner ? (
+                      <span className="chat-owner">圈主</span>
+                    ) : null}
+                  </div>
+                  <div className="chat-content">
+                    <span className="user-name">{v.data.user.userName}</span>
+                    <div>{v.data.content}</div>
+                  </div>
+                </div>
+              ) : (
+                <div className="chat-msg-self">
+                  <div>
+                    <img
+                      className="user-avatar"
+                      alt="图片"
+                      src={v.data.user.avatar}
+                      width="40"
+                      height="40"
+                    />
+                    {v.data.user.owner ? (
+                      <span className="chat-owner">圈主</span>
+                    ) : null}
+                  </div>
+                  <div className="chat-content">
+                    <span className="user-name">{v.data.user.userName}</span>
+                    <div>{v.data.content}</div>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        }
+      })}
+    </>
+  );
+}
 export default class Chat extends Component {
   constructor(props) {
     super(props);
@@ -49,33 +162,37 @@ export default class Chat extends Component {
     let socket = IO(
       `http://localhost:3000?token=${localStorage.getItem("token")}`
     );
+
     socket.on("connect", () => {
-      socket.on("response", (res) => {
-        if (res.type === 401) {
-          message.error(res.message);
-          return false;
-        }
+      console.log("client connect success");
+      socket.emit("join");
+    });
 
-        this.setState({
-          chatMsg: [...this.state.chatMsg, res],
-        });
+    socket.on("response", (res) => {
+      if (res.type === 401) {
+        message.error(res.message);
+        return false;
+      }
 
-        this.scrollTo = this.scrollTo
-          ? this.scrollTo
-          : document.getElementById("chat-show-area");
-        this.scrollTo.scrollTop = this.scrollTo.scrollHeight;
+      this.setState({
+        chatMsg: [...this.state.chatMsg, res],
       });
 
-      socket.on("broadcast", (data) => {
-        this.setState({
-          chatMsg: [...this.state.chatMsg, data],
-        });
-      });
+      this.scrollTo = this.scrollTo
+        ? this.scrollTo
+        : document.getElementById("chat-show-area");
+      this.scrollTo.scrollTop = this.scrollTo.scrollHeight;
+    });
 
-      // disconnect
-      socket.on("disconnect", () => {
-        console.log("disconnect...");
+    socket.on("broadcast", (data) => {
+      this.setState({
+        chatMsg: [...this.state.chatMsg, data],
       });
+    });
+
+    // disconnect
+    socket.on("disconnect", () => {
+      console.log("disconnect...");
     });
 
     this.socket = socket;
@@ -83,6 +200,7 @@ export default class Chat extends Component {
 
   _handleEditorChange = (editorState) => {
     this.setState({ editorState });
+    // this.state.editorState = editorState; //用setState 没次输入都要重新渲染 消耗性能
   };
 
   _sendMsg = () => {
@@ -117,9 +235,7 @@ export default class Chat extends Component {
           className="chat-show-area"
           style={{ height: chatHeight - 80 + "px" }}
         >
-          {chatMsg.map((v, i) => {
-            return <div key={i}>{v.data.content}</div>;
-          })}
+          <RenderChat chatMsg={chatMsg} />
         </div>
         <div className="braft-editor-area">
           <BraftEditor

@@ -85,7 +85,7 @@ class Register extends Component {
             </Form.Item>
             <Form.Item
               name="mobile"
-              rules={[{ message: "Please input your Mobile!" }]}
+              rules={[{ required: true, message: "Please input your Mobile!" }]}
             >
               <Input
                 prefix={<MobileOutlined className="site-form-item-icon" />}

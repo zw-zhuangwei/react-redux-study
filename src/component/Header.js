@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { Button } from "antd";
 
 const Wrapper = styled.section`
   width: 100%;
   text-align: right;
+  margin-right: 20px;
   .avatar {
     border-radius: 50%;
   }
@@ -12,6 +14,7 @@ const Wrapper = styled.section`
 export default class LayHeader extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       userInfo: JSON.parse(localStorage.getItem("userInfo")),
     };
@@ -23,7 +26,6 @@ export default class LayHeader extends Component {
       <Wrapper>
         <div>
           {" "}
-          欢迎您:
           {userInfo ? (
             <>
               <img
@@ -33,10 +35,17 @@ export default class LayHeader extends Component {
                 width="30"
                 height="30"
               />
-              <span>{userInfo.userName}</span>
+              <span> 欢迎您: {userInfo.userName}</span>
             </>
           ) : (
-            "尚未登录,请先登录"
+            <>
+              <Button
+                type="link"
+                onClick={() => this.props.history.push("/login")}
+              >
+                尚未登录
+              </Button>
+            </>
           )}
         </div>
       </Wrapper>
