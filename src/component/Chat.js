@@ -205,22 +205,22 @@ export default class Chat extends Component {
 
   _sendMsg = () => {
     const { editorState } = this.state;
-    this.socket.emit("request", editorState.toText());
+    this.socket.emit("request", editorState.toText()); // 后期根据type进行消息类型处理
     this.setState({ editorState: BraftEditor.createEditorState(null) }); // 清空编辑器内容
   };
 
-  _entrySendMsg = () => {
-    document.onkeydown = (event) => {
-      var e = event || window.event;
-      if (e && e.keyCode === 13) {
-        this._sendMsg();
-      }
-      event.stopPropagation();
-    };
-  };
+  // _entrySendMsg = () => {
+  //   document.onkeydown = (event) => {
+  //     var e = event || window.event;
+  //     if (e && e.keyCode === 13) {
+  //       this._sendMsg();
+  //     }
+  //     event.stopPropagation();
+  //   };
+  // };
 
   componentDidMount() {
-    this._entrySendMsg();
+    //  this._entrySendMsg();
     this.setState({
       scrollTo: document.getElementById("chat-show-area"),
     });
