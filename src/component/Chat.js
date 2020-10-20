@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { Button, message } from "antd";
 import IO from "socket.io-client";
 import styled from "styled-components";
-import BraftEditor from "braft-editor";
-import "braft-editor/dist/index.css";
+import E from "wangeditor";
+
 
 const Wrapper = styled.section`
+   height: 100%;
+   overflow: hidden;
   .chat-show-area {
-    height: calc(100vh - 100px);
-    border: 1px solid #ff5256;
     overflow: auto;
     padding: 10px;
     .sys-broadcast {
@@ -63,25 +63,13 @@ const Wrapper = styled.section`
       }
     }
   }
-  .braft-editor-area {
+  .chat-editor-area{
     position: relative;
-    top: 0;
-    right: 0;
-    bottom: 10px;
-    width: 100%;
-    .braft-editor {
-      width: 100%;
-      height: 100px;
-    }
-    .bf-content {
-      height: 100px;
-    }
-    .chat-send {
+    .btn-send-chat{
       position: absolute;
-      top: 50px;
-      right: 0;
-      z-index: 10;
-      cursor: pointer;
+      right: 10px;
+      bottom: 30px;
+      z-index: 10000;
     }
   }
 `;
@@ -152,15 +140,16 @@ export default class Chat extends Component {
     super(props);
 
     this.state = {
-      controls: ["bold", "italic", "underline", "emoji"],
-      editorState: BraftEditor.createEditorState(null),
       chatMsg: [],
       scrollTo: null,
-      chatHeight: props.height,
+    //  chatHeight: props.height,
+      wEditor: {}
     };
 
+    let hrefArr = window.location.href.split('/') 
+    let roomId = hrefArr[hrefArr.length - 1]
     let socket = IO(
-      `http://localhost:3000?token=${localStorage.getItem("token")}`
+      `http://192.168.4.136:3000?token=${localStorage.getItem("token")}&roomId=${roomId}`
     );
 
     socket.on("connect", () => {
@@ -169,10 +158,13 @@ export default class Chat extends Component {
     });
 
     socket.on("response", (res) => {
+      const { wEditor } = this.state;
       if (res.type === 401) {
         message.error(res.message);
         return false;
       }
+
+      wEditor.txt.clear()  //清除编辑器内容
 
       this.setState({
         chatMsg: [...this.state.chatMsg, res],
@@ -200,56 +192,57 @@ export default class Chat extends Component {
 
   _handleEditorChange = (editorState) => {
     this.setState({ editorState });
-    // this.state.editorState = editorState; //用setState 没次输入都要重新渲染 消耗性能
   };
+
+  _initEditor = () => {
+    const wEditor = new E("#wEditor");
+    wEditor.config.placeholder = '请输入聊天内容...'
+    wEditor.config.focus = false
+    wEditor.config.height = 100
+    wEditor.config.menus = []
+    return wEditor
+  }
 
   _sendMsg = () => {
-    const { editorState } = this.state;
-    this.socket.emit("request", editorState.toText()); // 后期根据type进行消息类型处理
-    this.setState({ editorState: BraftEditor.createEditorState(null) }); // 清空编辑器内容
+    const { wEditor } = this.state;
+    this.socket.emit("request", wEditor.txt.text()); // 后期根据type进行消息类型处理
   };
 
-  // _entrySendMsg = () => {
-  //   document.onkeydown = (event) => {
-  //     var e = event || window.event;
-  //     if (e && e.keyCode === 13) {
-  //       this._sendMsg();
-  //     }
-  //     event.stopPropagation();
-  //   };
-  // };
+  _entrySendMsg = () => {
+    document.onkeydown = (event) => {
+      var e = event || window.event;
+      if (e && e.keyCode === 13) {
+        this._sendMsg();
+      }
+      event.stopPropagation();
+    };
+  };
 
   componentDidMount() {
-    //  this._entrySendMsg();
+    const wEditor = this._initEditor()
+    wEditor.create()
+    this._entrySendMsg();
     this.setState({
       scrollTo: document.getElementById("chat-show-area"),
+      wEditor
     });
   }
 
   render() {
-    const { controls, editorState, chatMsg, chatHeight } = this.state;
+    const { chatMsg } = this.state;
     return (
       <Wrapper>
-        <div
-          id="chat-show-area"
-          className="chat-show-area"
-          style={{ height: chatHeight - 80 + "px" }}
-        >
-          <RenderChat chatMsg={chatMsg} />
-        </div>
-        <div className="braft-editor-area">
-          <BraftEditor
-            className="braft-editor"
-            placeholder={"请输入内容"}
-            controls={controls}
-            value={editorState}
-            onChange={this._handleEditorChange}
-            onSave={this._submitContent}
-          />
-          <Button className="chat-send" onClick={this._sendMsg}>
-            发送数据
-          </Button>
-        </div>
+          <div
+            id="chat-show-area"
+            className="chat-show-area"
+            style={{ height: document.body.clientHeight - 170 + "px" }}
+          >
+            <RenderChat chatMsg={chatMsg} />
+          </div>
+          <div className="chat-editor-area">
+            <div id="wEditor"></div>
+            <Button type="link" className="btn-send-chat" onClick={this._sendMsg}>发送</Button>
+          </div>
       </Wrapper>
     );
   }

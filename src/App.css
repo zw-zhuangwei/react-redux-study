@@ -34,6 +34,12 @@
 .App-link {
   color: #61dafb;
 }
+.ant-drawer-header{
+  padding: 10px;
+}
+.ant-drawer-body{
+  padding: 0;
+}
 
 @keyframes App-logo-spin {
   from {
