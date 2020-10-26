@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Button, message } from "antd";
+import { Button, Modal } from "antd";
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import IO from "socket.io-client";
 import styled from "styled-components";
 import E from "wangeditor";
@@ -137,7 +138,7 @@ function RenderChat(props) {
 }
 export default class Chat extends Component {
   constructor(props) {
-    super(props);
+    super();
 
     this.state = {
       chatMsg: [],
@@ -149,18 +150,24 @@ export default class Chat extends Component {
     let hrefArr = window.location.href.split('/') 
     let roomId = hrefArr[hrefArr.length - 1]
     let socket = IO(
-      `http://192.168.4.136:3000?token=${localStorage.getItem("token")}&roomId=${roomId}`
+      `http://localhost:3000?token=${localStorage.getItem("token")}&roomId=${roomId}`
     );
 
     socket.on("connect", () => {
       console.log("client connect success");
       socket.emit("join");
     });
-
     socket.on("response", (res) => {
       const { wEditor } = this.state;
       if (res.type === 401) {
-        message.error(res.message);
+        Modal.confirm({
+          title: '提示',
+          icon: <ExclamationCircleOutlined />,
+          content: res.message,
+          onOk(){window.location.href="/login"},
+          okText: '确认',
+          cancelText: '取消',
+        });
         return false;
       }
 

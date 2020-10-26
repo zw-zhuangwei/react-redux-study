@@ -107,7 +107,7 @@ class Register extends Component {
                   type="link"
                   onClick={() => this.props.history.push("/login")}
                 >
-                  register now!
+                  login now!
                 </Button>
               </div>
             </Form.Item>

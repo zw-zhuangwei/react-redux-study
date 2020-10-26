@@ -1,6 +1,9 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { Menu,Button} from "antd";
+import { Menu,Button,Dropdown} from "antd";
+import { DownOutlined } from '@ant-design/icons';
+import { layout } from "../api/account";
 
 const Wrapper = styled.section`
    width: 100%;
@@ -27,55 +30,72 @@ const Wrapper = styled.section`
   }
 `;
 
+const LayHeader = ()=>{
+  const [current,setCurrent] = useState('home')
+  const [userInfo,setUserInfo] = useState(()=>JSON.parse(localStorage.getItem("userInfo")))
+  const history = useHistory()
 
-export default class LayHeader extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userInfo: JSON.parse(localStorage.getItem("userInfo")),
-      current: 'home',
-    };
-  }
-
-  handleClick = e => {
-    this.setState({ current: e.key });
+  const _handleClick = e => {
+    setCurrent(e.key)
   };
 
-  render() {
-    let { userInfo,current } = this.state;
-    return (
-      <Wrapper>
+  const _layout = () => {
+    layout().then((res)=>{
+      localStorage.setItem('token','')
+      localStorage.setItem('userInfo',null)
+      setUserInfo(null)
+    })  
+  }
 
-        <div className="header-content">
+  const menu = (
+    <Menu>
+      <Menu.Item key="1">
+        <Button type="link" onClick={()=>history.push('/article/write')}>写博文</Button>
+      </Menu.Item>
+      <Menu.Item key="2">
+        <Button type="link" onClick={_layout}>退出账号</Button>
+      </Menu.Item>
+    </Menu>
+  );
 
-          <Menu className="header-menu" onClick={this.handleClick} selectedKeys={[current]} mode="horizontal">
-            <Menu.Item key="home">首页</Menu.Item>
-            <Menu.Item key="other">设计</Menu.Item>
-          </Menu>    
+  return (
+    <Wrapper>
 
-          <div className="account">
-            {userInfo ? (
-              <>
-                <img
-                  className="avatar"
-                  alt="图片"
-                  src={userInfo.avatar}
-                  width="24"
-                  height="24"
-                />
-                <span> {userInfo.userName}</span>
-              </>
-            ) : (
-              <>
-                <Button type="link" onClick={() => this.props.history.push("/login")}>登录</Button>
-                <Button type="link" onClick={() => this.props.history.push("/register")}>注册</Button>
-              </>
-            )}
-          </div>
+      <div className="header-content">
 
+        <Menu className="header-menu" onClick={_handleClick} selectedKeys={[current]} mode="horizontal">
+          <Menu.Item key="home">首页</Menu.Item>
+          <Menu.Item key="other">设计</Menu.Item>
+        </Menu>    
+
+        <div className="account">
+          {userInfo ? (
+            <>
+              <Dropdown overlay={menu}>
+                <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                  <img
+                    className="avatar"
+                    alt="图片"
+                    src={userInfo.avatar}
+                    width="24"
+                    height="24"
+                  />
+                  <span> {userInfo.userName}</span> <DownOutlined />
+                </a>
+              </Dropdown>
+            </>
+          ) : (
+            <>
+              <Button type="link" onClick={() => history.push("/login")}>登录</Button>
+              <Button type="link" onClick={() => history.push("/register")}>注册</Button>
+            </>
+          )}
         </div>
 
-      </Wrapper>
-    );
-  }
+      </div>
+
+    </Wrapper>
+  );
 }
+
+export default LayHeader
