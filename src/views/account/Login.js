@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import styled from "styled-components";
-import { Form, Input, Button, Checkbox, message } from "antd";
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import styled from 'styled-components'
+import { Form, Input, Button, Checkbox, message } from 'antd'
 import {
   UserOutlined,
   LockOutlined,
   EyeInvisibleOutlined,
   EyeTwoTone,
-} from "@ant-design/icons";
+} from '@ant-design/icons'
 
-import { login } from "../../api/account";
+import { login } from '../../api/account'
 
 const Wrapper = styled.section`
   padding: 4em;
@@ -33,7 +33,7 @@ const Wrapper = styled.section`
       margin-top: 10px;
     }
   }
-`;
+`
 
 class Login extends Component {
   render() {
@@ -49,7 +49,7 @@ class Login extends Component {
             <Form.Item
               name="userName"
               rules={[
-                { required: true, message: "Please input your Username!" },
+                { required: true, message: 'Please input your Username!' },
               ]}
             >
               <Input
@@ -61,7 +61,7 @@ class Login extends Component {
             <Form.Item
               name="password"
               rules={[
-                { required: true, message: "Please input your Password!" },
+                { required: true, message: 'Please input your Password!' },
               ]}
             >
               <Input.Password
@@ -94,7 +94,7 @@ class Login extends Component {
                 Or
                 <Button
                   type="link"
-                  onClick={() => this.props.history.push("/register")}
+                  onClick={() => this.props.history.push('/register')}
                 >
                   register now!
                 </Button>
@@ -103,28 +103,28 @@ class Login extends Component {
           </Form>
         </div>
       </Wrapper>
-    );
+    )
   }
 
   _login = (params) => {
     login(params).then((res) => {
       if (res.code === 200) {
-        localStorage.setItem("userInfo", JSON.stringify(res.data.user));
-        localStorage.setItem("token", res.data.token);
-        this.props.history.push(`/qzhome/${res.data.user.uid}`);
-        message.success(res.message);
+        localStorage.setItem('userInfo', JSON.stringify(res.data.user))
+        localStorage.setItem('token', res.data.token)
+        this.props.history.push(`/qzhome/${res.data.user.uid}`)
+        message.success(res.message)
       } else {
-        message.error(res.message);
+        message.error(res.message)
       }
-    });
-  };
+    })
+  }
 }
 
 let mapStateToProps = (state) => {
   return {
     count: state.counter.count,
-  };
-};
+  }
+}
 
 // Connected Component
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps)(Login)

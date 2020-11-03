@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import logo from "../../logo.svg";
-import "../../App.css";
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import logo from '../../logo.svg'
+import '../../App.css'
 
 class Demo1 extends Component {
   render() {
-    const { count } = this.props;
+    const { count } = this.props
     return (
       <>
         <div className="App">
@@ -23,15 +23,15 @@ class Demo1 extends Component {
           </header>
         </div>
       </>
-    );
+    )
   }
 }
 
 let mapStateToProps = (state) => {
   return {
     count: state.counter.count,
-  };
-};
+  }
+}
 
 // Connected Component
-export default connect(mapStateToProps)(Demo1);
+export default connect(mapStateToProps)(Demo1)
