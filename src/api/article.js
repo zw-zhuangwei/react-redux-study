@@ -1,12 +1,20 @@
-import $request from "../utils/request";
+import $request from '../utils/request'
 
 //查询所有文章
 export const articleQuery = (params) =>
-  $request.setPromise(`POST`, "/api/article/query", params);
-// 添加文章详情  
+  $request.setPromise(`GET`, '/api/article/query', params)
+//查询我的文章列表
+export const articleMyList = (params) =>
+  $request.setPromise(`GET`, '/api/article/myListQuery', params)
+// 查看文章详情
 export const articleDetails = (params) =>
-  $request.setPromise(`POST`, "/api/article/details", params);    
-// 添加文章  
+  $request.setPromise(`GET`, '/api/article/details', params)
+// 添加文章
 export const articleInsert = (params) =>
-  $request.setPromise(`POST`, "/api/article/insert", params);
-
+  $request.setPromise(`POST`, '/api/article/insert', params)
+// 修改文章
+export const articleModify = (params) =>
+  $request.setPromise(`POST`, '/api/article/modify', params)
+// 删除文章
+export const articleRemove = (params) =>
+  $request.setPromise(`POST`, '/api/article/remove', params)

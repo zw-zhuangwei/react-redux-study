@@ -1,14 +1,13 @@
-import React, { Component } from "react";
-import { Button, Modal } from "antd";
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import IO from "socket.io-client";
-import styled from "styled-components";
-import E from "wangeditor";
-
+import React, { useState, useEffect } from 'react'
+import { Button, Modal } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+import IO from 'socket.io-client'
+import styled from 'styled-components'
+import E from 'wangeditor'
 
 const Wrapper = styled.section`
-   height: 100%;
-   overflow: hidden;
+  height: 100%;
+  overflow: hidden;
   .chat-show-area {
     overflow: auto;
     padding: 10px;
@@ -64,20 +63,23 @@ const Wrapper = styled.section`
       }
     }
   }
-  .chat-editor-area{
+  .chat-editor-area {
     position: relative;
-    .btn-send-chat{
+    .btn-send-chat {
       position: absolute;
       right: 10px;
       bottom: 30px;
       z-index: 10000;
     }
   }
-`;
-let userInfo = null;
-function RenderChat(props) {
-  userInfo = userInfo ? userInfo : JSON.parse(localStorage.getItem("userInfo"));
-  let { chatMsg } = props;
+`
+
+let userInfo = null
+const RenderChat = ({ chatMsg }) => {
+  userInfo = userInfo ? userInfo : JSON.parse(localStorage.getItem('userInfo'))
+  // const [chatMsg, setChatMsg] = useState(message)
+  // setChatMsg(message)
+
   return (
     <>
       {chatMsg.map((v, i) => {
@@ -86,7 +88,7 @@ function RenderChat(props) {
             <div key={i} className="sys-broadcast">
               {v.data.content}
             </div>
-          );
+          )
         } else {
           return (
             <div key={i} className="chat-msg">
@@ -130,127 +132,120 @@ function RenderChat(props) {
                 </div>
               )}
             </div>
-          );
+          )
         }
       })}
     </>
-  );
+  )
 }
-export default class Chat extends Component {
-  constructor(props) {
-    super();
 
-    this.state = {
-      chatMsg: [],
-      scrollTo: null,
-    //  chatHeight: props.height,
-      wEditor: {}
-    };
+let chatMsgStorage = []
+let wEditor = {}
+let scrollTo = {}
+let socket
 
-    let hrefArr = window.location.href.split('/') 
+const Chat = () => {
+  const [chatMsg, setChatMsg] = useState([])
+
+  const _initEditor = () => {
+    wEditor = new E('#wEditor')
+    wEditor.config.placeholder = '请输入聊天内容...'
+    wEditor.config.focus = false
+    wEditor.config.height = 100
+    wEditor.config.menus = []
+
+    wEditor.create()
+  }
+
+  useEffect(() => {
+    //初始化编辑器
+    _initEditor()
+
+    //键盘事件
+    _entrySendMsg()
+
+    // 滚动对象
+    scrollTo = document.getElementById('chat-show-area')
+
+    let hrefArr = window.location.href.split('/')
     let roomId = hrefArr[hrefArr.length - 1]
-    let socket = IO(
-      `http://localhost:3000?token=${localStorage.getItem("token")}&roomId=${roomId}`
-    );
+    socket = IO(
+      `http://localhost:3000?token=${localStorage.getItem(
+        'token'
+      )}&roomId=${roomId}`
+    )
 
-    socket.on("connect", () => {
-      console.log("client connect success");
-      socket.emit("join");
-    });
-    socket.on("response", (res) => {
-      const { wEditor } = this.state;
+    //socket connect
+    socket.on('connect', () => {
+      console.log('client connect success')
+      socket.emit('join')
+    })
+    //socket response
+    socket.on('response', (res) => {
       if (res.type === 401) {
         Modal.confirm({
           title: '提示',
           icon: <ExclamationCircleOutlined />,
           content: res.message,
-          onOk(){window.location.href="/login"},
+          onOk() {
+            window.location.href = '/login'
+          },
           okText: '确认',
           cancelText: '取消',
-        });
-        return false;
+        })
+        return false
       }
+      wEditor.txt.clear() //清除编辑器内容
+      chatMsgStorage = [...chatMsgStorage, res]
+      setChatMsg(chatMsgStorage)
+      scrollTo.scrollTop = scrollTo.scrollHeight
+    })
 
-      wEditor.txt.clear()  //清除编辑器内容
+    //socket broadcast
+    socket.on('broadcast', (res) => {
+      wEditor.txt.clear() //清除编辑器内容
+      chatMsgStorage = [...chatMsgStorage, res]
+      setChatMsg(chatMsgStorage)
+      scrollTo.scrollTop = scrollTo.scrollHeight
+    })
 
-      this.setState({
-        chatMsg: [...this.state.chatMsg, res],
-      });
+    //socket disconnect
+    socket.on('disconnect', () => {
+      console.log('disconnect...')
+    })
+  }, [])
 
-      this.scrollTo = this.scrollTo
-        ? this.scrollTo
-        : document.getElementById("chat-show-area");
-      this.scrollTo.scrollTop = this.scrollTo.scrollHeight;
-    });
-
-    socket.on("broadcast", (data) => {
-      this.setState({
-        chatMsg: [...this.state.chatMsg, data],
-      });
-    });
-
-    // disconnect
-    socket.on("disconnect", () => {
-      console.log("disconnect...");
-    });
-
-    this.socket = socket;
+  const _sendMsg = () => {
+    socket.emit('request', wEditor.txt.text()) // 后期根据type进行消息类型处理
   }
 
-  _handleEditorChange = (editorState) => {
-    this.setState({ editorState });
-  };
-
-  _initEditor = () => {
-    const wEditor = new E("#wEditor");
-    wEditor.config.placeholder = '请输入聊天内容...'
-    wEditor.config.focus = false
-    wEditor.config.height = 100
-    wEditor.config.menus = []
-    return wEditor
-  }
-
-  _sendMsg = () => {
-    const { wEditor } = this.state;
-    this.socket.emit("request", wEditor.txt.text()); // 后期根据type进行消息类型处理
-  };
-
-  _entrySendMsg = () => {
+  const _entrySendMsg = () => {
     document.onkeydown = (event) => {
-      var e = event || window.event;
+      var e = event || window.event
       if (e && e.keyCode === 13) {
-        this._sendMsg();
+        _sendMsg()
       }
-      event.stopPropagation();
-    };
-  };
-
-  componentDidMount() {
-    const wEditor = this._initEditor()
-    wEditor.create()
-    this._entrySendMsg();
-    this.setState({
-      scrollTo: document.getElementById("chat-show-area"),
-      wEditor
-    });
+      event.stopPropagation()
+    }
   }
 
-  render() {
-    const { chatMsg } = this.state;
-    return (
-      <Wrapper>
-          <div
-            id="chat-show-area"
-            className="chat-show-area"
-            style={{ height: document.body.clientHeight - 170 + "px" }}
-          >
-            <RenderChat chatMsg={chatMsg} />
-          </div>
-          <div className="chat-editor-area">
-            <div id="wEditor"></div>
-            <Button type="link" className="btn-send-chat" onClick={this._sendMsg}>发送</Button>
-          </div>
-      </Wrapper>
-    );
-  }
+  return (
+    <Wrapper>
+      <div
+        id="chat-show-area"
+        className="chat-show-area"
+        style={{ height: document.body.clientHeight - 170 + 'px' }}
+      >
+        <RenderChat chatMsg={chatMsg} />
+      </div>
+      <div className="chat-editor-area">
+        <div id="wEditor"></div>
+        <Button type="link" className="btn-send-chat" onClick={_sendMsg}>
+          发送
+        </Button>
+      </div>
+    </Wrapper>
+  )
 }
+
+export default Chat

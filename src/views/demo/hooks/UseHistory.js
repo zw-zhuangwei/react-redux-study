@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
-export default () => {
+const HookUseHistory = () => {
   const history = useHistory()
   const [count, setCount] = useState(10000)
 
@@ -42,3 +42,4 @@ export default () => {
     </div>
   )
 }
+export default HookUseHistory

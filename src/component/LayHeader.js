@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Menu, Button, Dropdown } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 import { layout } from '../api/account'
+import { QcEventEmitter } from '.'
 
 const Wrapper = styled.section`
   width: 100%;
@@ -37,6 +38,10 @@ const LayHeader = () => {
   )
   const history = useHistory()
 
+  QcEventEmitter.addListener('contextClick', () => {
+    setUserInfo(null)
+  })
+
   const _handleClick = (e) => {
     setCurrent(e.key)
   }
@@ -54,6 +59,9 @@ const LayHeader = () => {
       <Menu.Item key="1">
         <Button type="link" onClick={() => history.push('/article/write')}>
           写博文
+        </Button>
+        <Button type="link" onClick={() => history.push('/article/myList')}>
+          管理博文
         </Button>
       </Menu.Item>
       <Menu.Item key="2">

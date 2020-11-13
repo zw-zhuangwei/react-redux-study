@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default () => {
+const HookUseState = () => {
   //写法一
   const [count1, setCount1] = useState(10000)
   //写法二
@@ -27,3 +27,5 @@ export default () => {
     </div>
   )
 }
+
+export default HookUseState

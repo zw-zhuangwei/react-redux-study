@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useContext } from 'react'
 
-export default () => {
+const HookUseContent = () => {
   const AppContext = React.createContext({})
 
   const Navbar = () => {
@@ -43,3 +43,4 @@ export default () => {
     </AppContext.Provider>
   )
 }
+export default HookUseContent

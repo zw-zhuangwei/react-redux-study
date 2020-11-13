@@ -22,6 +22,7 @@ const Login = asyncLoader(() => import('../views/account/Login'))
 const Register = asyncLoader(() => import('../views/account/Register'))
 const ArticleWrite = asyncLoader(() => import('../views/article/Write'))
 const ArticleDetails = asyncLoader(() => import('../views/article/Details'))
+const ArticleMyList = asyncLoader(() => import('../views/article/MyList'))
 const Demo1 = asyncLoader(() => import('../views/demo/Demo1'))
 const Demo2 = asyncLoader(() => import('../views/demo/Demo2'))
 const Demo3 = asyncLoader(() => import('../views/demo/Demo3'))
@@ -49,7 +50,7 @@ const DemoHooksDefineHook = asyncLoader(() =>
 )
 const Counter = asyncLoader(() => import('../component/Counter'))
 
-export default () => (
+const RouterGroup = () => (
   <Provider store={store}>
     <Router>
       <Switch>
@@ -65,6 +66,11 @@ export default () => (
           exact
           path="/article/details/:rid"
           component={withRouter(ArticleDetails)}
+        />
+        <Route
+          exact
+          path="/article/my_list"
+          component={withRouter(ArticleMyList)}
         />
         <Route exact path="/home" component={withRouter(Home)} />
         <Route exact path="/qzhome/:rid" component={withRouter(Qzhome)} />
@@ -117,3 +123,5 @@ export default () => (
     </Router>
   </Provider>
 )
+
+export default RouterGroup

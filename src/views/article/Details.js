@@ -5,7 +5,7 @@ import { articleDetails } from '../../api/article'
 
 const { Content } = Layout
 
-export default () => {
+const ArticleDetails = () => {
   // const [details,setDetails] = useState({});
   const [content, setContent] = useState('')
   const hrefArr = window.location.href.split('/')
@@ -15,7 +15,7 @@ export default () => {
     articleDetails({
       id: articleId,
     }).then((res) => {
-      setContent(res.data.content)
+      if (res.data) setContent(res.data.content)
     })
   }, [articleId])
 
@@ -28,3 +28,5 @@ export default () => {
     </>
   )
 }
+
+export default ArticleDetails

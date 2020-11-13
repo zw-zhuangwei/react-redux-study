@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 
-export default () => {
+const HookUseEffect = () => {
   const [show, setShow] = useState('1')
 
   const Person = ({ personId }) => {
@@ -57,3 +57,4 @@ export default () => {
     </div>
   )
 }
+export default HookUseEffect

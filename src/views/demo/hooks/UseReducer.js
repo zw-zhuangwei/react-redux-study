@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useReducer } from 'react'
 
-export default () => {
+const HookUseReducer = () => {
   const myReducer = (state, action) => {
     switch (action.type) {
       case 'countUp':
@@ -23,3 +23,5 @@ export default () => {
     </div>
   )
 }
+
+export default HookUseReducer

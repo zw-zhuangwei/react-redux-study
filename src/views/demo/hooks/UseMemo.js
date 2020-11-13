@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react'
 const set = new Set()
 
-export default () => {
+const HookUseMemo = () => {
   const [count, setCount] = useState(1)
   const [val, setValue] = useState('')
   const expensive = useMemo(() => {
@@ -36,5 +36,7 @@ export default () => {
     </div>
   )
 }
+
+export default HookUseMemo
 
 // 文档出处 https://blog.csdn.net/sinat_17775997/article/details/94453167

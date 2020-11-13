@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { message } from 'antd'
+import { QcEventEmitter } from '../component'
 axios.defaults.headers = {}
 axios.defaults.timeout = 20000
 axios.interceptors.request.use(
@@ -29,6 +30,7 @@ axios.interceptors.response.use(
           break
         case 401:
           error.message = '未授权，请重新登录-401'
+          QcEventEmitter.emit('contextClick', 'Lucy', '99')
           break
         case 403:
           error.message = '拒绝访问-无权限访问-403'

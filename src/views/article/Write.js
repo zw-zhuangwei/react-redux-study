@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { Layout, Form, Input, Button, Select, message } from 'antd'
 import E from 'wangeditor'
 import { LayHeader } from '../../component'
-import { articleInsert } from '../../api/article'
+import { articleInsert, articleModify } from '../../api/article'
 
 const { Content } = Layout
 const { Option } = Select
 
-export default () => {
+let initData = {}
+
+const ArticleWrite = () => {
   const [form] = Form.useForm()
   const [wEditor, setWEditor] = useState(null)
-  const history = useHistory()
 
+  const history = useHistory()
+  const location = useLocation()
+  initData = location.state.record
   const onTypeSelect = () => {}
 
   const initEditor = () => {
@@ -27,8 +31,31 @@ export default () => {
   const formSubmit = async () => {
     try {
       const v = await form.validateFields()
-      console.log('Success:', v)
       articleInsert({
+        title: v.title,
+        desc: v.desc,
+        type: v.type,
+        content: wEditor.txt.text(),
+      }).then((res) => {
+        if (res.code === 200) {
+          message.success(res.message)
+          history.push(
+            `/qzhome/${JSON.parse(localStorage.getItem('userInfo')).uid}`
+          )
+        } else {
+          message.error(res.message)
+        }
+      })
+    } catch (errorInfo) {
+      console.log('Failed:', errorInfo)
+    }
+  }
+
+  const formModify = async () => {
+    try {
+      const v = await form.validateFields()
+      articleModify({
+        id: initData._id,
         title: v.title,
         desc: v.desc,
         type: v.type,
@@ -52,6 +79,7 @@ export default () => {
     const wEditor = initEditor()
     wEditor.create()
     setWEditor(wEditor)
+    wEditor.txt.text(initData.content)
   }, [])
 
   return (
@@ -64,6 +92,7 @@ export default () => {
           <Form.Item
             label="标题"
             name="title"
+            initialValue={initData.title}
             rules={[{ required: true, message: '请填写标题' }]}
           >
             <Input placeholder="标题" />
@@ -72,6 +101,7 @@ export default () => {
             label="描述"
             required
             name="desc"
+            initialValue={initData.desc}
             rules={[{ required: true, message: '请填写描述' }]}
           >
             <Input.TextArea placeholder="描述" />
@@ -96,16 +126,28 @@ export default () => {
             <div id="wEditor"></div>
           </Form.Item>
           <Form.Item labelAlign="left">
-            <Button
-              onClick={formSubmit}
-              style={{ marginLeft: '48%' }}
-              type="primary"
-            >
-              发布
-            </Button>
+            {!initData._id ? (
+              <Button
+                onClick={formSubmit}
+                style={{ marginLeft: '48%' }}
+                type="primary"
+              >
+                发布
+              </Button>
+            ) : (
+              <Button
+                onClick={formModify}
+                style={{ marginLeft: '48%' }}
+                type="primary"
+              >
+                修改
+              </Button>
+            )}
           </Form.Item>
         </Form>
       </Content>
     </>
   )
 }
+
+export default ArticleWrite

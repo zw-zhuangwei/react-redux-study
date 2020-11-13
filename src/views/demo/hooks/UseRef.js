@@ -2,7 +2,7 @@ import React, { useState, useRef, useImperativeHandle } from 'react'
 
 // 借鉴文档 https://blog.csdn.net/qq_24724109/article/details/103817607
 
-export default () => {
+const HookUseRef = () => {
   // 通过useRef hook 获得相应的ref节点
   const myRef = useRef()
 
@@ -59,3 +59,5 @@ export default () => {
     </div>
   )
 }
+
+export default HookUseRef
