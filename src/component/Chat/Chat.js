@@ -157,12 +157,22 @@ const Chat = () => {
     wEditor.create()
   }
 
+  const _entrySendMsg = () => {
+    document.onkeydown = (event) => {
+      var e = event || window.event
+      if (e && e.keyCode === 13) {
+        _sendMsg()
+      }
+      event.stopPropagation()
+    }
+  }
+
+  //键盘事件
+  _entrySendMsg()
+
   useEffect(() => {
     //初始化编辑器
     _initEditor()
-
-    //键盘事件
-    _entrySendMsg()
 
     // 滚动对象
     scrollTo = document.getElementById('chat-show-area')
@@ -217,16 +227,6 @@ const Chat = () => {
 
   const _sendMsg = () => {
     socket.emit('request', wEditor.txt.text()) // 后期根据type进行消息类型处理
-  }
-
-  const _entrySendMsg = () => {
-    document.onkeydown = (event) => {
-      var e = event || window.event
-      if (e && e.keyCode === 13) {
-        _sendMsg()
-      }
-      event.stopPropagation()
-    }
   }
 
   return (
