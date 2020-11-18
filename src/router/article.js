@@ -6,20 +6,16 @@ const ArticleMyList = asyncLoader(() => import('../views/article/MyList'))
 
 const article = [
   {
-    routes: [
-      {
-        path: '/article/write',
-        component: ArticleWrite,
-      },
-      {
-        path: '/article/details/:rid',
-        component: ArticleDetails,
-      },
-      {
-        path: '/article/my_list',
-        component: ArticleMyList,
-      },
-    ],
+    path: '/article/write',
+    component: ArticleWrite,
+  },
+  {
+    path: '/article/details/:rid',
+    component: ArticleDetails,
+  },
+  {
+    path: '/article/my_list',
+    component: ArticleMyList,
   },
 ]
 

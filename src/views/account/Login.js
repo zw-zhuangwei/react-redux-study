@@ -1,4 +1,4 @@
-//import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { Form, Input, Button, Checkbox, message } from 'antd'

@@ -6,25 +6,22 @@ const Qzhome = asyncLoader(() => import('../views/quanzi/Home'))
 
 const base = [
   {
-    routes: [
-      {
-        path: '/',
-        component: Home,
-      },
-      {
-        path: '/home',
-        component: Home,
-      },
-      {
-        path: '/qzhome/:rid',
-        component: Qzhome,
-      },
-      // {
-      //   path: '/counter',
-      //   component: Counter,
-      // },
-    ],
+    path: '/',
+    exact: true,
+    component: Home,
   },
+  {
+    path: '/home',
+    component: Home,
+  },
+  {
+    path: '/qzhome/:rid',
+    component: Qzhome,
+  },
+  // {
+  //   path: '/counter',
+  //   component: Counter,
+  // },
 ]
 
 export default base

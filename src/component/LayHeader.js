@@ -60,7 +60,7 @@ const LayHeader = () => {
         <Button type="link" onClick={() => history.push('/article/write')}>
           写博文
         </Button>
-        <Button type="link" onClick={() => history.push('/article/myList')}>
+        <Button type="link" onClick={() => history.push('/article/my_list')}>
           管理博文
         </Button>
       </Menu.Item>

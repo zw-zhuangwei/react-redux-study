@@ -5,17 +5,12 @@ const Register = asyncLoader(() => import('../views/account/Register'))
 
 const account = [
   {
+    path: '/login',
     component: Login,
-    routes: [
-      {
-        path: '/login',
-        component: Login,
-      },
-      {
-        path: '/register',
-        component: Register,
-      },
-    ],
+  },
+  {
+    path: '/register',
+    component: Register,
   },
 ]
 

@@ -28,52 +28,48 @@ const DemoHooksDefineHook = asyncLoader(() =>
 
 const demo = [
   {
-    routes: [
-      {
-        path: '/demo1',
-        component: Demo1,
-      },
-      {
-        path: '/demo2',
-        component: Demo2,
-      },
-      {
-        path: '/demo3',
-        component: Demo3,
-      },
-      {
-        path: '/demo/hooks/use_state',
-        component: DemoHooksUseState,
-      },
-      {
-        path: '/demo/hooks/use_effect',
-        component: DemoHooksUseEffect,
-      },
-      {
-        path: '/demo/hooks/use_history',
-        component: DemoHooksUseHistory,
-      },
-      {
-        path: '/demo/hooks/use_ref',
-        component: DemoHooksUseRef,
-      },
-      {
-        path: '/demo/hooks/use_context',
-        component: DemoHooksUseContext,
-      },
-      {
-        path: '/demo/hooks/use_reducer',
-        component: DemoHooksUseReducer,
-      },
-      {
-        path: '/demo/hooks/use_memo',
-        component: DemoHooksUseMemo,
-      },
-      {
-        path: '/demo/hooks/define_hook',
-        component: DemoHooksDefineHook,
-      },
-    ],
+    path: '/demo1',
+    component: Demo1,
+  },
+  {
+    path: '/demo2',
+    component: Demo2,
+  },
+  {
+    path: '/demo3',
+    component: Demo3,
+  },
+  {
+    path: '/demo/hooks/use_state',
+    component: DemoHooksUseState,
+  },
+  {
+    path: '/demo/hooks/use_effect',
+    component: DemoHooksUseEffect,
+  },
+  {
+    path: '/demo/hooks/use_history',
+    component: DemoHooksUseHistory,
+  },
+  {
+    path: '/demo/hooks/use_ref',
+    component: DemoHooksUseRef,
+  },
+  {
+    path: '/demo/hooks/use_context',
+    component: DemoHooksUseContext,
+  },
+  {
+    path: '/demo/hooks/use_reducer',
+    component: DemoHooksUseReducer,
+  },
+  {
+    path: '/demo/hooks/use_memo',
+    component: DemoHooksUseMemo,
+  },
+  {
+    path: '/demo/hooks/define_hook',
+    component: DemoHooksDefineHook,
   },
 ]
 
