@@ -3,8 +3,9 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { Menu, Button, Dropdown } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
-import { layout } from '../api/account'
+import { layout } from '@api/account'
 import { QcEventEmitter } from '.'
+import { renderRoutes } from 'react-router-config'
 
 const Wrapper = styled.section`
   width: 100%;
@@ -31,7 +32,7 @@ const Wrapper = styled.section`
   }
 `
 
-const LayHeader = () => {
+const LayHeader = ({ route }) => {
   const [current, setCurrent] = useState('home')
   const [userInfo, setUserInfo] = useState(() =>
     JSON.parse(localStorage.getItem('userInfo'))
@@ -103,16 +104,25 @@ const LayHeader = () => {
             </>
           ) : (
             <>
-              <Button type="link" onClick={() => history.push('/login')}>
+              <Button
+                type="link"
+                onClick={() => history.push('/account/login')}
+              >
                 登录
               </Button>
-              <Button type="link" onClick={() => history.push('/register')}>
+              <Button
+                type="link"
+                onClick={() => history.push('/account/register')}
+              >
                 注册
               </Button>
             </>
           )}
         </div>
       </div>
+      {renderRoutes(route.routes, {
+        someProp: 'these extra props are optional12121',
+      })}
     </Wrapper>
   )
 }

@@ -1,29 +1,27 @@
-import asyncLoader from '../utils/loadable'
+import asyncLoader from '@utils/loadable'
 
-const Demo1 = asyncLoader(() => import('../views/demo/Demo1'))
-const Demo2 = asyncLoader(() => import('../views/demo/Demo2'))
-const Demo3 = asyncLoader(() => import('../views/demo/Demo3'))
+const Demo1 = asyncLoader(() => import('@views/demo/Demo1'))
+const Demo2 = asyncLoader(() => import('@views/demo/Demo2'))
+const Demo3 = asyncLoader(() => import('@views/demo/Demo3'))
 const DemoHooksUseState = asyncLoader(() =>
-  import('../views/demo/hooks/UseState')
+  import('@views/demo/hooks/UseState')
 )
 const DemoHooksUseEffect = asyncLoader(() =>
-  import('../views/demo/hooks/UseEffect')
+  import('@views/demo/hooks/UseEffect')
 )
 const DemoHooksUseHistory = asyncLoader(() =>
-  import('../views/demo/hooks/UseHistory')
+  import('@views/demo/hooks/UseHistory')
 )
 const DemoHooksUseRef = asyncLoader(() => import('../views/demo/hooks/UseRef'))
 const DemoHooksUseContext = asyncLoader(() =>
-  import('../views/demo/hooks/UseContext')
+  import('@views/demo/hooks/UseContext')
 )
 const DemoHooksUseReducer = asyncLoader(() =>
-  import('../views/demo/hooks/UseReducer')
+  import('@views/demo/hooks/UseReducer')
 )
-const DemoHooksUseMemo = asyncLoader(() =>
-  import('../views/demo/hooks/UseMemo')
-)
+const DemoHooksUseMemo = asyncLoader(() => import('@views/demo/hooks/UseMemo'))
 const DemoHooksDefineHook = asyncLoader(() =>
-  import('../views/demo/hooks/DefineHook')
+  import('@views/demo/hooks/DefineHook')
 )
 
 const demo = [

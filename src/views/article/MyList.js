@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { Layout, Table, Space, message, Button } from 'antd'
-import { LayHeader } from '../../component'
-import { articleMyList, articleRemove } from '../../api/article'
+import { articleMyList, articleRemove } from '@api/article'
 
 const Wrapper = styled.section`
   .ant-btn {
@@ -125,9 +124,6 @@ const ArticleMyList = () => {
 
   return (
     <Wrapper>
-      <div className="qz-header">
-        <LayHeader />
-      </div>
       <Content>
         <Table
           loading={false}

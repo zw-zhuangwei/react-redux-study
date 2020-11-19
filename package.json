@@ -23,16 +23,19 @@
     "wangeditor": "^4.3.0"
   },
   "devDependencies": {
+    "babel-plugin-import": "^1.13.1",
     "cross-env": "^7.0.2",
-    "http-proxy-middleware": "^1.0.6"
+    "customize-cra": "^1.0.0",
+    "http-proxy-middleware": "^1.0.6",
+    "react-app-rewired": "^2.1.6"
   },
   "scripts": {
-    "local": "cross-env REACT_APP_ENV=local PORT=8080 react-scripts start",
-    "build:dev": "cross-env REACT_APP_ENV=dev react-scripts build",
-    "build:qa": "cross-env REACT_APP_ENV=qa react-scripts build",
-    "build:stage": "cross-env REACT_APP_ENV=stage react-scripts build",
-    "build": "cross-env REACT_APP_ENV=prod react-scripts build",
-    "test": "react-scripts test",
+    "local": "cross-env REACT_APP_ENV=local PORT=8080 react-app-rewired start",
+    "build:dev": "cross-env REACT_APP_ENV=dev react-app-rewired build",
+    "build:qa": "cross-env REACT_APP_ENV=qa react-app-rewired build",
+    "build:stage": "cross-env REACT_APP_ENV=stage react-app-rewired build",
+    "build": "cross-env REACT_APP_ENV=prod react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

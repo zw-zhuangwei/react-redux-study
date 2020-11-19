@@ -11,7 +11,7 @@ import {
   EyeTwoTone,
 } from '@ant-design/icons'
 
-import { register } from '../../api/account'
+import { register } from '@api/account'
 
 const Wrapper = styled.section`
   padding: 4em;
@@ -42,7 +42,7 @@ const Register = () => {
     register(params).then((res) => {
       if (res.code === 200) {
         message.success(res.message)
-        history.push('/login')
+        history.push('/account/login')
       } else {
         message.error(res.message)
       }
@@ -109,7 +109,10 @@ const Register = () => {
             </Button>
             <div className="reg-form-register">
               Or
-              <Button type="link" onClick={() => history.push('/login')}>
+              <Button
+                type="link"
+                onClick={() => history.push('/account/login')}
+              >
                 login now!
               </Button>
             </div>

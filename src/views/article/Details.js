@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Layout } from 'antd'
-import { LayHeader } from '../../component'
-import { articleDetails } from '../../api/article'
+import { articleDetails } from '@api/article'
 
 const { Content } = Layout
 
@@ -21,9 +20,6 @@ const ArticleDetails = () => {
 
   return (
     <>
-      <div className="qz-header">
-        <LayHeader />
-      </div>
       <Content style={{ padding: '0 50px' }}>{content}</Content>
     </>
   )

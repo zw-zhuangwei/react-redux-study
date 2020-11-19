@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import logo from "../../logo.svg";
-import "../../App.css";
+import React, { Component } from 'react'
+import logo from '@/logo.svg'
+import '@/App.css'
 
 export default class Demo3 extends Component {
   render() {
@@ -23,6 +23,6 @@ export default class Demo3 extends Component {
           </header>
         </div>
       </>
-    );
+    )
   }
 }

@@ -1,4 +1,4 @@
-import $request from "../utils/request";
+import $request from '@utils/request'
 
 export const goodsType = (params) =>
-  $request.setPromise(`GET`, "/mock/test.json", params);
+  $request.setPromise(`GET`, '/mock/test.json', params)

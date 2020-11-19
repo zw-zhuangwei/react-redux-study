@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { Layout, Form, Input, Button, Select, message } from 'antd'
 import E from 'wangeditor'
-import { LayHeader } from '../../component'
-import { articleInsert, articleModify } from '../../api/article'
+import { articleInsert, articleModify } from '@api/article'
 
 const { Content } = Layout
 const { Option } = Select
@@ -84,9 +83,6 @@ const ArticleWrite = () => {
 
   return (
     <>
-      <div className="qz-header">
-        <LayHeader />
-      </div>
       <Content style={{ padding: '0 50px' }}>
         <Form form={form} layout="horizontal" style={{ marginTop: '20px' }}>
           <Form.Item

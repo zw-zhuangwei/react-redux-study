@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { message } from 'antd'
-import { QcEventEmitter } from '../component'
+import { QcEventEmitter } from '@components'
 axios.defaults.headers = {}
 axios.defaults.timeout = 20000
 axios.interceptors.request.use(

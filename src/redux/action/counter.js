@@ -2,9 +2,9 @@ import {
   COUNTER_INCREASE,
   COUNTER_REDUCE,
   COUNTER_ASYNC_TEST,
-} from '../type/counter'
+} from '@redux/type/counter'
 
-import * as test from '../../api/test.js'
+import * as test from '@api/test.js'
 
 const CounterAction = {
   counter: {

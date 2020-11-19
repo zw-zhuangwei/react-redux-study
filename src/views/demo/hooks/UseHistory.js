@@ -37,7 +37,7 @@ const HookUseHistory = () => {
       </p>
 
       <p>
-        <button onClick={() => history.push('/login')}>跳转</button>
+        <button onClick={() => history.push('/account/login')}>跳转</button>
       </p>
     </div>
   )

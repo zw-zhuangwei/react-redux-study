@@ -1,27 +1,28 @@
-import asyncLoader from '../utils/loadable'
-
-const Home = asyncLoader(() => import('../views/layout/Home'))
-const Qzhome = asyncLoader(() => import('../views/quanzi/Home'))
-//const Counter = () => import('../component/Counter')
+import asyncLoader from '@utils/loadable'
+const LayHeader = asyncLoader(() => import('@components/LayHeader'))
+const Qzhome = asyncLoader(() => import('@views/quanzi/Home'))
+const Counter = asyncLoader(() => import('@components/Counter'))
 
 const base = [
   {
     path: '/',
     exact: true,
-    component: Home,
+    component: LayHeader,
   },
   {
-    path: '/home',
-    component: Home,
+    path: '/counter',
+    component: Counter,
   },
   {
-    path: '/qzhome/:rid',
-    component: Qzhome,
+    path: '/qzhome',
+    component: LayHeader,
+    routes: [
+      {
+        path: '/qzhome/:rid',
+        component: Qzhome,
+      },
+    ],
   },
-  // {
-  //   path: '/counter',
-  //   component: Counter,
-  // },
 ]
 
 export default base

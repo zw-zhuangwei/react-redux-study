@@ -7,9 +7,9 @@ import {
 } from '@ant-design/icons'
 import styled from 'styled-components'
 
-import { LayHeader, Chat } from '../../component'
+import { Chat } from '@components'
 
-import { articleQuery } from '../../api/article'
+import { articleQuery } from '@api/article'
 
 const Wrapper = styled.section`
   &.qz-home {
@@ -54,9 +54,9 @@ const Qzhome = () => {
 
   return (
     <Wrapper className="qz-home">
-      <div className="qz-header">
+      {/* <div className="qz-header">
         <LayHeader />
-      </div>
+      </div> */}
 
       <div className="qz-container">
         <List

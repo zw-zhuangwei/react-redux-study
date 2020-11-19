@@ -1,15 +1,15 @@
-import asyncLoader from '../utils/loadable'
+import asyncLoader from '@utils/loadable'
 
-const Login = asyncLoader(() => import('../views/account/Login'))
-const Register = asyncLoader(() => import('../views/account/Register'))
+const Login = asyncLoader(() => import('@views/account/Login'))
+const Register = asyncLoader(() => import('@views/account/Register'))
 
 const account = [
   {
-    path: '/login',
+    path: '/account/login',
     component: Login,
   },
   {
-    path: '/register',
+    path: '/account/register',
     component: Register,
   },
 ]

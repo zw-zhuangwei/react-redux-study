@@ -1,5 +1,5 @@
-import counter from "./counter";
+import counter from './counter'
 
-let action = Object.assign({}, counter);
+let action = Object.assign({}, counter)
 
-export default action;
+export default action

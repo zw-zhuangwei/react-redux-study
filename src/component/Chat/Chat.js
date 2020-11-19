@@ -198,7 +198,7 @@ const Chat = () => {
           icon: <ExclamationCircleOutlined />,
           content: res.message,
           onOk() {
-            window.location.href = '/login'
+            window.location.href = '/account/login'
           },
           okText: '确认',
           cancelText: '取消',

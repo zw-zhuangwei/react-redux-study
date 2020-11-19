@@ -9,7 +9,7 @@ import {
   EyeTwoTone,
 } from '@ant-design/icons'
 
-import { login } from '../../api/account'
+import { login } from '@api/account'
 
 const Wrapper = styled.section`
   padding: 4em;
@@ -100,7 +100,10 @@ const Login = () => {
             </Button>
             <div className="login-form-register">
               Or
-              <Button type="link" onClick={() => history.push('/register')}>
+              <Button
+                type="link"
+                onClick={() => history.push('/account/register')}
+              >
                 register now!
               </Button>
             </div>

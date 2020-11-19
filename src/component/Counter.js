@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import action from '../redux/action'
+import action from '@redux/action'
 
 const Wrapper = styled.section`
   padding: 4em;
