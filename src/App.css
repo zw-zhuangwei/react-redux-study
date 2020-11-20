@@ -1,4 +1,4 @@
-/* @import "~antd/dist/antd.css"; */  
+/* @import "~antd/dist/antd.css";   */
 
 #root {
   height: 100%;
@@ -38,7 +38,7 @@
   padding: 10px;
 }
 .ant-drawer-body{
-  padding: 0;
+  padding: 0!important;
 }
 
 @keyframes App-logo-spin {

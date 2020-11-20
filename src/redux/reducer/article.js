@@ -1,18 +1,30 @@
-import { ARTICLE_QUERY } from '@redux/type/article'
+import {
+  ARTICLE_QUERY,
+  ARTICLE_MYLIST,
+  ARTICLE_REMOVE,
+} from '@redux/type/article'
 
 let initState = {
-  count: 10000,
-  data: {},
+  qzHomeData: {},
+  artMylistData: {},
 }
 
 const article = (state = initState, action) => {
-  const count = state.count
-  console.log('>>>>>>>reduce获取的值: ', action)
   switch (action.type) {
     case ARTICLE_QUERY:
       return {
         ...state,
-        count: count + 1,
+        qzHomeData: action.data,
+      }
+    case ARTICLE_MYLIST:
+      return {
+        ...state,
+        artMylistData: action.data.data,
+      }
+    case ARTICLE_REMOVE:
+      return {
+        ...state,
+        listData: action.data,
       }
     default:
       return state

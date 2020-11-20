@@ -11,7 +11,6 @@ let initState = {
 
 const counter = (state = initState, action) => {
   const count = state.count
-  console.log('>>>>>>>reduce获取的值: ', action)
   switch (action.type) {
     case COUNTER_INCREASE:
       return {

@@ -1,3 +1,3 @@
-export const COUNTER_INCREASE = Symbol("COUNTER_INCREASE");
-export const COUNTER_REDUCE = Symbol("COUNTER_REDUCE");
-export const COUNTER_ASYNC_TEST = Symbol("COUNTER_ASYNC_TEST");
+export const COUNTER_INCREASE = Symbol('COUNTER_INCREASE')
+export const COUNTER_REDUCE = Symbol('COUNTER_REDUCE')
+export const COUNTER_ASYNC_TEST = Symbol('COUNTER_ASYNC_TEST')

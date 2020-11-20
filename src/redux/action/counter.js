@@ -24,7 +24,6 @@ const CounterAction = {
     },
     asyncTest: (payload) => {
       return (dispatch) => {
-        console.log('>>>>>action接收的值: ', payload)
         return test.goodsType(payload).then((res) => {
           dispatch({
             type: COUNTER_ASYNC_TEST,
