@@ -66,7 +66,7 @@ class Counter extends Component {
   }
 
   homeClick = () => {
-    this.props.history.push('/home')
+    this.props.history.push('/qzhome/home')
   }
 }
 

@@ -1,5 +1,6 @@
+import { Redirect } from 'react-router-dom'
 import asyncLoader from '@utils/loadable'
-const LayHeader = asyncLoader(() => import('@components/LayHeader'))
+const LayHome = asyncLoader(() => import('@views/layout/Home'))
 const Qzhome = asyncLoader(() => import('@views/quanzi/Home'))
 const Counter = asyncLoader(() => import('@components/Counter'))
 
@@ -7,7 +8,7 @@ const base = [
   {
     path: '/',
     exact: true,
-    component: LayHeader,
+    component: () => <Redirect to="/qzhome/home" />,
   },
   {
     path: '/counter',
@@ -15,10 +16,14 @@ const base = [
   },
   {
     path: '/qzhome',
-    component: LayHeader,
+    component: LayHome,
     routes: [
       {
-        path: '/qzhome/:rid',
+        path: '/qzhome/home',
+        component: Qzhome,
+      },
+      {
+        path: '/qzhome/:id',
         component: Qzhome,
       },
     ],

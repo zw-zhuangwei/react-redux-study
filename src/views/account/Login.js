@@ -42,7 +42,7 @@ const Login = () => {
       if (res.code === 200) {
         localStorage.setItem('userInfo', JSON.stringify(res.data.user))
         localStorage.setItem('token', res.data.token)
-        history.push(`/qzhome/${res.data.user.uid}`)
+        history.push(`/qzhome/home`)
         message.success(res.message)
       } else {
         message.error(res.message)

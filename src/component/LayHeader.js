@@ -5,7 +5,6 @@ import { Menu, Button, Dropdown } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 import { layout } from '@api/account'
 import { QcEventEmitter } from '.'
-import { renderRoutes } from 'react-router-config'
 
 const Wrapper = styled.section`
   width: 100%;
@@ -14,7 +13,7 @@ const Wrapper = styled.section`
   .header-content {
     display: flex;
     justify-content: space-between;
-    width: 1200px;
+    max-width: 1200px;
     margin: 0 auto;
     .header-menu {
       text-align: right;
@@ -32,7 +31,7 @@ const Wrapper = styled.section`
   }
 `
 
-const LayHeader = ({ route }) => {
+const LayHeader = () => {
   const [current, setCurrent] = useState('home')
   const [userInfo, setUserInfo] = useState(() =>
     JSON.parse(localStorage.getItem('userInfo'))
@@ -120,9 +119,6 @@ const LayHeader = ({ route }) => {
           )}
         </div>
       </div>
-      {renderRoutes(route.routes, {
-        someProp: 'these extra props are optional12121',
-      })}
     </Wrapper>
   )
 }

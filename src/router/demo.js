@@ -1,3 +1,4 @@
+// import { Redirect } from 'react-router-dom'
 import asyncLoader from '@utils/loadable'
 
 const Demo1 = asyncLoader(() => import('@views/demo/Demo1'))
@@ -68,6 +69,13 @@ const demo = [
   {
     path: '/demo/hooks/define_hook',
     component: DemoHooksDefineHook,
+  },
+  {
+    path: '*',
+    // component: () => <Redirect to="/404" />,
+    render: () => (
+      <div style={{ textAlign: 'center', marginTop: 100 }}>Not Found Page</div>
+    ),
   },
 ]
 

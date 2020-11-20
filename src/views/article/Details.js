@@ -4,19 +4,16 @@ import { articleDetails } from '@api/article'
 
 const { Content } = Layout
 
-const ArticleDetails = () => {
-  // const [details,setDetails] = useState({});
+const ArticleDetails = ({ route, match }) => {
   const [content, setContent] = useState('')
-  const hrefArr = window.location.href.split('/')
-  const articleId = hrefArr[hrefArr.length - 1]
 
   useEffect(() => {
     articleDetails({
-      id: articleId,
+      id: match.params.id,
     }).then((res) => {
       if (res.data) setContent(res.data.content)
     })
-  }, [articleId])
+  })
 
   return (
     <>

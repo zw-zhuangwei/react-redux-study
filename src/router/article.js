@@ -1,6 +1,6 @@
 import asyncLoader from '@utils/loadable'
 
-const LayHeader = asyncLoader(() => import('@components/LayHeader'))
+const LayHome = asyncLoader(() => import('@views/layout/Home'))
 const ArticleWrite = asyncLoader(() => import('@views/article/Write'))
 const ArticleDetails = asyncLoader(() => import('@views/article/Details'))
 const ArticleMyList = asyncLoader(() => import('@views/article/MyList'))
@@ -8,14 +8,14 @@ const ArticleMyList = asyncLoader(() => import('@views/article/MyList'))
 const article = [
   {
     path: '/article',
-    component: LayHeader,
+    component: LayHome,
     routes: [
       {
         path: '/article/write',
         component: ArticleWrite,
       },
       {
-        path: '/article/details/:rid',
+        path: '/article/details/:id',
         component: ArticleDetails,
       },
       {

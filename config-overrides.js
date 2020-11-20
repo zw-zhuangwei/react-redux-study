@@ -3,6 +3,8 @@ const path = require('path')
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
+
+process.env.GENERATE_SOURCEMAP = 'false' //关闭css和js的map文件
 /* 路径别名配置 */
 module.exports = override(
   addWebpackAlias({
@@ -16,7 +18,8 @@ module.exports = override(
   }),
   /* antd组件按需加载 */
   fixBabelImports('import', {
-    libraryName: 'antd-mobile',
+    libraryName: 'antd',
+    libraryDirectory: 'es',
     style: 'css',
   })
 )
