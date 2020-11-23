@@ -4,15 +4,12 @@ import { BrowserRouter, Switch } from 'react-router-dom'
 import { renderRoutes } from 'react-router-config'
 import store from '@redux/store'
 
-import base from './base'
-import account from './account'
-import article from './article'
-import demo from './demo'
+import routes from './modules'
 
 const initRoute = [
   {
     component: ({ route }) => <>{renderRoutes(route.routes)}</>,
-    routes: [...base, ...account, ...article, ...demo],
+    routes,
   },
 ]
 

@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { Menu, Button, Dropdown } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
+import { useSelector, useDispatch } from 'react-redux'
 import { layout } from '@api/account'
 import { QcEventEmitter } from '.'
 
@@ -32,6 +33,8 @@ const Wrapper = styled.section`
 `
 
 const LayHeader = () => {
+  //const dispatch = useDispatch()
+  //const userInfo1 = useSelector()
   const [current, setCurrent] = useState('home')
   const [userInfo, setUserInfo] = useState(() =>
     JSON.parse(localStorage.getItem('userInfo'))

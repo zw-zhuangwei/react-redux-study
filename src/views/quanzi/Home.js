@@ -6,9 +6,10 @@ import {
   FolderViewOutlined,
 } from '@ant-design/icons'
 import styled from 'styled-components'
+
 import { Chat } from '@components'
-import { useSelector, useDispatch } from 'react-redux'
-import action from '@redux/action'
+
+import { articleQuery } from '@api/article'
 
 const Wrapper = styled.section`
   &.qz-home {
@@ -34,18 +35,22 @@ const IconText = ({ icon, text }) => (
 )
 
 const Qzhome = () => {
-  const dispatch = useDispatch()
   const [visible, setVisible] = useState(false)
+  const [listData, setListData] = useState([])
 
   const _onDrawerClose = () => {
     setVisible(!visible)
   }
 
-  useEffect(() => {
-    action.article.artQuery(dispatch)
-  }, [dispatch])
+  const initData = () => {
+    articleQuery().then((res) => {
+      setListData(res.data)
+    })
+  }
 
-  const listData = useSelector((state) => state.article.qzHomeData.data)
+  useEffect(() => {
+    initData()
+  }, [])
 
   return (
     <Wrapper className="qz-home">
@@ -113,5 +118,4 @@ const Qzhome = () => {
     </Wrapper>
   )
 }
-
 export default Qzhome
