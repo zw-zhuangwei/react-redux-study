@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux' //combinReducers用于合并各模块的reducers;
 import counter from './counter'
-import article from './article'
+import user from './user'
 
 const reducers = combineReducers({
   counter,
-  article,
+  user,
 })
 
 export default reducers

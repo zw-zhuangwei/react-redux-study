@@ -1,6 +1,7 @@
 /* eslint-disable default-case */
 
 import axios from 'axios'
+import cookie from 'js-cookie'
 export default class Request {
   static setPromise(method, url, data) {
     return new Promise((resolve, reject) => {
@@ -10,9 +11,7 @@ export default class Request {
             .get(url, {
               params: data,
               headers: {
-                Authorization: localStorage.getItem('token')
-                  ? localStorage.getItem('token')
-                  : null,
+                Authorization: cookie.get('token') ? cookie.get('token') : null,
               },
             })
             .then((res) => {
@@ -31,9 +30,7 @@ export default class Request {
             url: url,
             data: data,
             headers: {
-              Authorization: localStorage.getItem('token')
-                ? localStorage.getItem('token')
-                : null,
+              Authorization: cookie.get('token') ? cookie.get('token') : null,
             },
           }).then((res) => {
             if (res) {
@@ -48,9 +45,7 @@ export default class Request {
             .delete(url, {
               data: data,
               headers: {
-                Authorization: localStorage.getItem('token')
-                  ? localStorage.getItem('token')
-                  : null,
+                Authorization: cookie.get('token') ? cookie.get('token') : null,
               },
             })
             .then((res) => {

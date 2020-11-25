@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Layout, Table, Space, message, Button } from 'antd'
+import { Layout, Table, Space, message, Button, Modal } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+import dayjs from 'dayjs'
+
 import { articleMyList, articleRemove } from '@api/article'
+
+const { confirm } = Modal
 
 const Wrapper = styled.section`
   .ant-btn {
@@ -13,12 +18,17 @@ const Wrapper = styled.section`
 const { Content } = Layout
 
 const ArticleMyList = () => {
-  const history = useHistory()
   const [artList, setArtList] = useState([])
   const [pageNo, setPageNo] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [count, setCount] = useState(0)
   const columns = [
+    {
+      title: '序号',
+      width: 40,
+      align: 'center',
+      render: (text, record, index) => `${index + 1}`,
+    },
     {
       title: '标题',
       dataIndex: 'title',
@@ -54,6 +64,7 @@ const ArticleMyList = () => {
       ellipsis: {
         showTitle: false,
       },
+      render: (time) => dayjs(time).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       title: '操作',
@@ -61,12 +72,8 @@ const ArticleMyList = () => {
       width: 90,
       render: (text, record) => (
         <Space size="middle">
-          <Button type="link" onClick={() => handleInfiniteOnLoad()}>
-            查看
-          </Button>
-          <Button type="link" onClick={() => handleModifyArt(text, record)}>
-            修改
-          </Button>
+          <Link to={`/article/details/${record._id}`}>查看</Link>
+          <Link to={`/article/write?_id=${record._id}`}>修改</Link>
           <Button type="link" onClick={() => handleRemoveArt(text, record)}>
             删除
           </Button>
@@ -105,20 +112,28 @@ const ArticleMyList = () => {
   }
 
   //修改文章
-  const handleModifyArt = (text, record) => {
-    history.push({
-      pathname: '/article/write',
-      state: { record },
-    })
-  }
+  // const handleModifyArt = (text, record) => {
+  //   history.push({
+  //     pathname: `/article/write?name=11`,  //这种方式?后面传值跳转后组件不刷新
+  //     parmas: { record },
+  //   })
+  // }
 
   //删除文章
   const handleRemoveArt = (text, record) => {
-    articleRemove({
-      id: record._id,
-    }).then((res) => {
-      message.success('删除成功')
-      handleInfiniteOnLoad()
+    confirm({
+      icon: <ExclamationCircleOutlined />,
+      content: '确定删除此文章么',
+      okText: '确定',
+      cancelText: '取消',
+      onOk() {
+        articleRemove({
+          id: record._id,
+        }).then((res) => {
+          message.success('删除成功')
+          handleInfiniteOnLoad()
+        })
+      },
     })
   }
 
@@ -131,17 +146,22 @@ const ArticleMyList = () => {
           dataSource={artList}
           scroll={{ y: 300 }}
           rowKey={(record) => record._id}
-          pagination={{
-            total: count,
-            defaultCurrent: pageNo,
-            defaultPageSize: pageSize,
-            pageSizeOptions: [10, 20, 50, 100, 200],
-            showSizeChanger: true,
-            showTotal: (total) => `总共${total}条`,
-            onChange: (page, pageSize) => handlePageChange(page, pageSize),
-            onShowSizeChange: (current, pageSize) =>
-              handlePageSizeChange(current, pageSize),
-          }}
+          pagination={
+            count !== 0
+              ? {
+                  total: count,
+                  defaultCurrent: pageNo,
+                  defaultPageSize: pageSize,
+                  pageSizeOptions: [10, 20, 50, 100, 200],
+                  showSizeChanger: true,
+                  showTotal: (total) => `总共${total}条`,
+                  onChange: (page, pageSize) =>
+                    handlePageChange(page, pageSize),
+                  onShowSizeChange: (current, pageSize) =>
+                    handlePageSizeChange(current, pageSize),
+                }
+              : false
+          }
         />
       </Content>
     </Wrapper>

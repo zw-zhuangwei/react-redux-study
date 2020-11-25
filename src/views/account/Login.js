@@ -1,6 +1,8 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
+import { useDispatch } from 'react-redux'
+import cookie from 'js-cookie'
 import { Form, Input, Button, Checkbox, message } from 'antd'
 import {
   UserOutlined,
@@ -8,8 +10,8 @@ import {
   EyeInvisibleOutlined,
   EyeTwoTone,
 } from '@ant-design/icons'
-
 import { login } from '@api/account'
+import action from '@redux/action'
 
 const Wrapper = styled.section`
   padding: 4em;
@@ -37,11 +39,13 @@ const Wrapper = styled.section`
 
 const Login = () => {
   const history = useHistory()
+  const dispatch = useDispatch()
   const _login = (params) => {
     login(params).then((res) => {
       if (res.code === 200) {
-        localStorage.setItem('userInfo', JSON.stringify(res.data.user))
-        localStorage.setItem('token', res.data.token)
+        cookie.set('userInfo', res.data.user)
+        cookie.set('token', res.data.token)
+        action.user.userInfo(dispatch, res.data.user)
         history.push(`/qzhome/home`)
         message.success(res.message)
       } else {

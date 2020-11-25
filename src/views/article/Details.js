@@ -4,7 +4,7 @@ import { articleDetails } from '@api/article'
 
 const { Content } = Layout
 
-const ArticleDetails = ({ route, match }) => {
+const ArticleDetails = ({ match }) => {
   const [content, setContent] = useState('')
 
   useEffect(() => {

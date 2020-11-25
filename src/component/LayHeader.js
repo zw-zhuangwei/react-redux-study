@@ -3,7 +3,8 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { Menu, Button, Dropdown } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
-import { useSelector, useDispatch } from 'react-redux'
+//import { useSelector } from 'react-redux'
+import cookie from 'js-cookie'
 import { layout } from '@api/account'
 import { QcEventEmitter } from '.'
 
@@ -33,16 +34,17 @@ const Wrapper = styled.section`
 `
 
 const LayHeader = () => {
-  //const dispatch = useDispatch()
-  //const userInfo1 = useSelector()
+  const history = useHistory()
+  //const userInfo = useSelector((state) => state.user.userInfo)
   const [current, setCurrent] = useState('home')
   const [userInfo, setUserInfo] = useState(() =>
-    JSON.parse(localStorage.getItem('userInfo'))
+    cookie.get('userInfo') ? JSON.parse(cookie.get('userInfo')) : {}
   )
-  const history = useHistory()
 
-  QcEventEmitter.addListener('contextClick', () => {
-    setUserInfo(null)
+  QcEventEmitter.addListener('login_state_401', () => {
+    cookie.remove('token')
+    cookie.remove('userInfo')
+    setUserInfo(cookie.get('userInfo'))
   })
 
   const _handleClick = (e) => {
@@ -51,16 +53,23 @@ const LayHeader = () => {
 
   const _layout = () => {
     layout().then((res) => {
-      localStorage.setItem('token', '')
-      localStorage.setItem('userInfo', null)
-      setUserInfo(null)
+      cookie.remove('token')
+      cookie.remove('userInfo')
+      setUserInfo(cookie.get('userInfo'))
     })
   }
 
   const menu = (
     <Menu>
       <Menu.Item key="1">
-        <Button type="link" onClick={() => history.push('/article/write')}>
+        <Button
+          type="link"
+          onClick={() =>
+            history.push({
+              pathname: '/article/write',
+            })
+          }
+        >
           写博文
         </Button>
         <Button type="link" onClick={() => history.push('/article/my_list')}>
@@ -89,7 +98,7 @@ const LayHeader = () => {
         </Menu>
 
         <div className="account">
-          {userInfo ? (
+          {userInfo && userInfo.userName ? (
             <>
               <Dropdown overlay={menu}>
                 <div>

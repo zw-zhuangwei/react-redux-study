@@ -34,7 +34,7 @@ const IconText = ({ icon, text }) => (
   </Space>
 )
 
-const Qzhome = () => {
+const Qzhome = ({ route, match }) => {
   const [visible, setVisible] = useState(false)
   const [listData, setListData] = useState([])
 

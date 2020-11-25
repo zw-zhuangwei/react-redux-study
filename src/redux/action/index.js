@@ -1,6 +1,6 @@
 import counter from './counter'
-import article from './article'
+import user from './user'
 
-let action = Object.assign({}, counter, article)
+let action = Object.assign({}, counter, user)
 
 export default action

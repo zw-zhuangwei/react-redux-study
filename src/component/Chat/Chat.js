@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Modal } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
+import cookie from 'js-cookie'
 import IO from 'socket.io-client'
 import styled from 'styled-components'
 import E from 'wangeditor'
@@ -76,7 +77,11 @@ const Wrapper = styled.section`
 
 let userInfo = null
 const RenderChat = ({ chatMsg }) => {
-  userInfo = userInfo ? userInfo : JSON.parse(localStorage.getItem('userInfo'))
+  userInfo = userInfo
+    ? userInfo
+    : cookie.get('userInfo')
+    ? JSON.parse(cookie.get('userInfo'))
+    : {}
   // const [chatMsg, setChatMsg] = useState(message)
   // setChatMsg(message)
 
@@ -180,9 +185,7 @@ const Chat = () => {
     let hrefArr = window.location.href.split('/')
     let roomId = hrefArr[hrefArr.length - 1]
     socket = IO(
-      `http://localhost:3000?token=${localStorage.getItem(
-        'token'
-      )}&roomId=${roomId}`
+      `http://localhost:3000?token=${cookie.get('token')}&roomId=${roomId}`
     )
 
     //socket connect

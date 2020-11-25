@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Layout, Form, Input, Button, Select, message } from 'antd'
+import qs from 'query-string'
+import cookie from 'js-cookie'
 import E from 'wangeditor'
-import { articleInsert, articleModify } from '@api/article'
+import { articleInsert, articleModify, articleDetails } from '@api/article'
 
 const { Content } = Layout
 const { Option } = Select
 
-let initData = {}
-
-const ArticleWrite = () => {
-  const [form] = Form.useForm()
-  const [wEditor, setWEditor] = useState(null)
-
+const ArticleWrite = ({ route, match }) => {
+  const parmas = qs.parse(window.location.search)
   const history = useHistory()
-  const location = useLocation()
-  initData = location.state.record
-  const onTypeSelect = () => {}
+  const [form] = Form.useForm()
+  const [wEditor, setWEditor] = useState({})
 
   const initEditor = () => {
     const wEditor = new E('#wEditor')
@@ -26,6 +23,27 @@ const ArticleWrite = () => {
     wEditor.config.menus = []
     return wEditor
   }
+
+  useEffect(() => {
+    const wEditor = initEditor()
+    wEditor.create()
+    setWEditor(wEditor)
+    if (parmas._id) {
+      articleDetails({
+        id: parmas._id,
+      }).then((res) => {
+        if (res.data) {
+          form.setFieldsValue({ ...res.data })
+          wEditor.txt.text(res.data.content)
+        }
+      })
+    } else {
+      wEditor.txt.text('')
+      form.resetFields() //清空表单
+    }
+  }, [form, parmas._id])
+
+  const onTypeSelect = () => {}
 
   const formSubmit = async () => {
     try {
@@ -38,9 +56,9 @@ const ArticleWrite = () => {
       }).then((res) => {
         if (res.code === 200) {
           message.success(res.message)
-          history.push(
-            `/qzhome/${JSON.parse(localStorage.getItem('userInfo')).uid}`
-          )
+          history.push({
+            pathname: `/qzhome/${JSON.parse(cookie.get('userInfo')).uid}`,
+          })
         } else {
           message.error(res.message)
         }
@@ -54,7 +72,7 @@ const ArticleWrite = () => {
     try {
       const v = await form.validateFields()
       articleModify({
-        id: initData._id,
+        id: parmas._id,
         title: v.title,
         desc: v.desc,
         type: v.type,
@@ -62,9 +80,9 @@ const ArticleWrite = () => {
       }).then((res) => {
         if (res.code === 200) {
           message.success(res.message)
-          history.push(
-            `/qzhome/${JSON.parse(localStorage.getItem('userInfo')).uid}`
-          )
+          history.push({
+            pathname: `/qzhome/${JSON.parse(cookie.get('userInfo')).uid}`,
+          })
         } else {
           message.error(res.message)
         }
@@ -74,21 +92,18 @@ const ArticleWrite = () => {
     }
   }
 
-  useEffect(() => {
-    const wEditor = initEditor()
-    wEditor.create()
-    setWEditor(wEditor)
-    wEditor.txt.text(initData.content)
-  }, [])
-
   return (
     <>
       <Content style={{ padding: '0 50px' }}>
-        <Form form={form} layout="horizontal" style={{ marginTop: '20px' }}>
+        <Form
+          form={form}
+          layout="horizontal"
+          style={{ marginTop: '20px' }}
+          initialValues={form}
+        >
           <Form.Item
             label="标题"
             name="title"
-            initialValue={initData.title}
             rules={[{ required: true, message: '请填写标题' }]}
           >
             <Input placeholder="标题" />
@@ -97,7 +112,6 @@ const ArticleWrite = () => {
             label="描述"
             required
             name="desc"
-            initialValue={initData.desc}
             rules={[{ required: true, message: '请填写描述' }]}
           >
             <Input.TextArea placeholder="描述" />
@@ -118,11 +132,11 @@ const ArticleWrite = () => {
               <Option value="css">css</Option>
             </Select>
           </Form.Item>
-          <Form.Item label="内容" required name="content">
+          <Form.Item label="内容" required>
             <div id="wEditor"></div>
           </Form.Item>
           <Form.Item labelAlign="left">
-            {!initData._id ? (
+            {!parmas._id ? (
               <Button
                 onClick={formSubmit}
                 style={{ marginLeft: '48%' }}
