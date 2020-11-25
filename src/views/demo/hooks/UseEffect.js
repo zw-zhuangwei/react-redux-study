@@ -57,7 +57,7 @@ const HookUseEffect = () => {
 
   const testFun = useCallback(() => {
     console.log('s1111222334455666s' + show)
-  }, [])
+  }, [show])
 
   useMemo(() => {
     console.log('useMemouseMemouseMemouseMemo' + show)
