@@ -20,6 +20,7 @@ const ArticleWrite = ({ route, match }) => {
     wEditor.config.placeholder = '请输入聊天内容...'
     wEditor.config.focus = false
     // wEditor.config.height = 300
+    wEditor.config.zIndex = 0
     wEditor.config.menus = []
     return wEditor
   }

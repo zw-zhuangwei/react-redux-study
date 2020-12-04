@@ -41,7 +41,7 @@ const LayHeader = () => {
     cookie.get('userInfo') ? JSON.parse(cookie.get('userInfo')) : {}
   )
 
-  QcEventEmitter.addListener('login_state_401', () => {
+  QcEventEmitter.addListener('loginStateEvent', () => {
     cookie.remove('token')
     cookie.remove('userInfo')
     setUserInfo(cookie.get('userInfo'))
