@@ -18,3 +18,13 @@ export const articleModify = (params) =>
 // 删除文章
 export const articleRemove = (params) =>
   $request.setPromise(`POST`, '/api/article/remove', params)
+
+// 评论文章
+export const articleComment = (params) =>
+  $request.setPromise(`POST`, '/api/article/comment', params)
+// 评论文章
+export const commentListQuery = (params) =>
+  $request.setPromise(`GET`, '/api/article/commentListQuery', params)
+// 评论回复
+export const commentReply = (params) =>
+  $request.setPromise(`POST`, '/api/article/commentReply', params)

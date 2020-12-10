@@ -185,7 +185,7 @@ const Chat = () => {
     let hrefArr = window.location.href.split('/')
     let roomId = hrefArr[hrefArr.length - 1]
     socket = IO(
-      `http://192.168.4.59:3000?token=${cookie.get('token')}&roomId=${roomId}`
+      `http://localhost:3000?token=${cookie.get('token')}&roomId=${roomId}`
     )
 
     //socket connect
