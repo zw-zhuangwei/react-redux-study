@@ -5,7 +5,7 @@ axios.defaults.headers = {}
 axios.defaults.timeout = 20000
 axios.interceptors.request.use(
   (config) => {
-    if (config.method.toUpperCase === 'GET') {
+    if (config.method.toUpperCase() === 'GET') {
       if (!config.params) config.params = {}
       config.params._preventCache = new Date().getTime()
     }

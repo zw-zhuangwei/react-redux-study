@@ -11,6 +11,7 @@ import {
   Avatar,
   Pagination,
   message,
+  Empty,
 } from 'antd'
 import { DislikeOutlined, LikeFilled, FormOutlined } from '@ant-design/icons'
 import {
@@ -294,43 +295,51 @@ const ArticleDetails = ({ match }) => {
       >
         <FormOutlined /> 发表评论
       </Button>
-      {artCommentList.map((item, i) => {
-        return (
-          <Comment
-            key={i}
-            actions={commentActions(item, i, 1)}
-            author={<a>{item.user.userName}</a>}
-            avatar={<Avatar src={item.user.avatar} alt={item.user.userName} />}
-            content={<p>{item.content}</p>}
-            datetime={
-              <Tooltip
-                title={dayjs(item.createAt).format('YYYY-MM-DD HH:mm:ss')}
-              >
-                <span>{dayjs(item.createAt).fromNow()}</span>
-              </Tooltip>
-            }
-          >
-            {item.reply.map((r, k) => {
-              return (
-                <Comment
-                  key={'reply' + k}
-                  actions={replyActions(r, k, 0)}
-                  author={<a>{r.user.userName}</a>}
-                  avatar={<Avatar src={r.user.avatar} alt={r.user.userName} />}
-                  content={<p>{r.content}</p>}
-                  datetime={
-                    <Tooltip
-                      title={dayjs(r.createAt).format('YYYY-MM-DD HH:mm:ss')}
-                    >
-                      <span>{dayjs(r.createAt).fromNow()}</span>
-                    </Tooltip>
-                  }
-                ></Comment>
-              )
-            })}
-          </Comment>
-        )
-      })}
+      {artCommentList.length > 0 ? (
+        artCommentList.map((item, i) => {
+          return (
+            <Comment
+              key={i}
+              actions={commentActions(item, i, 1)}
+              author={<a>{item.user.userName}</a>}
+              avatar={
+                <Avatar src={item.user.avatar} alt={item.user.userName} />
+              }
+              content={<p>{item.content}</p>}
+              datetime={
+                <Tooltip
+                  title={dayjs(item.createAt).format('YYYY-MM-DD HH:mm:ss')}
+                >
+                  <span>{dayjs(item.createAt).fromNow()}</span>
+                </Tooltip>
+              }
+            >
+              {item.reply.map((r, k) => {
+                return (
+                  <Comment
+                    key={'reply' + k}
+                    actions={replyActions(r, k, 0)}
+                    author={<a>{r.user.userName}</a>}
+                    avatar={
+                      <Avatar src={r.user.avatar} alt={r.user.userName} />
+                    }
+                    content={<p>{r.content}</p>}
+                    datetime={
+                      <Tooltip
+                        title={dayjs(r.createAt).format('YYYY-MM-DD HH:mm:ss')}
+                      >
+                        <span>{dayjs(r.createAt).fromNow()}</span>
+                      </Tooltip>
+                    }
+                  ></Comment>
+                )
+              })}
+            </Comment>
+          )
+        })
+      ) : (
+        <Empty description="暂无评论" imageStyle={{ marginTop: 70 }} />
+      )}
       <div className="art-pagination-area">
         <Pagination
           total={count}

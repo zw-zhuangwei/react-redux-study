@@ -1,4 +1,9 @@
-const { override, fixBabelImports, addWebpackAlias } = require('customize-cra')
+const {
+  override,
+  addLessLoader,
+  fixBabelImports,
+  addWebpackAlias,
+} = require('customize-cra')
 const path = require('path')
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -7,6 +12,7 @@ function resolve(dir) {
 process.env.GENERATE_SOURCEMAP = 'false' //关闭css和js的map文件
 /* 路径别名配置 */
 module.exports = override(
+  addLessLoader(),
   addWebpackAlias({
     '@': resolve('src'),
     '@api': resolve('./src/api'),
