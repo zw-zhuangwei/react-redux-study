@@ -18,6 +18,9 @@ export const articleModify = (params) =>
 // 删除文章
 export const articleRemove = (params) =>
   $request.setPromise(`POST`, '/api/article/remove', params)
+// 文章点赞
+export const articlePraise = (params) =>
+  $request.setPromise(`POST`, '/api/article/praise', params)
 
 // 评论文章
 export const articleComment = (params) =>
@@ -28,3 +31,9 @@ export const commentListQuery = (params) =>
 // 评论回复
 export const commentReply = (params) =>
   $request.setPromise(`POST`, '/api/article/commentReply', params)
+// 评论点赞
+export const commentPraise = (params) =>
+  $request.setPromise(`POST`, '/api/article/commentPraise', params)
+// 评论回复点赞
+export const replyPraise = (params) =>
+  $request.setPromise(`POST`, '/api/article/replyPraise', params)

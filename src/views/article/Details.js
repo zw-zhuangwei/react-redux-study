@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { createElement, useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
@@ -11,18 +12,15 @@ import {
   Pagination,
   message,
 } from 'antd'
-import {
-  DislikeOutlined,
-  LikeOutlined,
-  DislikeFilled,
-  LikeFilled,
-  FormOutlined,
-} from '@ant-design/icons'
+import { DislikeOutlined, LikeFilled, FormOutlined } from '@ant-design/icons'
 import {
   articleDetails,
   articleComment,
+  articlePraise,
   commentListQuery,
   commentReply,
+  commentPraise,
+  replyPraise,
 } from '@api/article'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -33,6 +31,30 @@ const Wrapper = styled.section`
   height: calc(100vh - 100px);
   margin: 20px auto 0 auto;
   overflow: auto;
+  .zan-area {
+    font-family: Impact, sans-serif;
+    text-align: center;
+    color: #4a4a4a;
+    font-size: 14px;
+    margin-top: 30px;
+    .icon-zan {
+      display: block;
+      cursor: pointer;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      text-align: center;
+      font-size: 40px;
+      color: #fff;
+      margin: 0 auto 5px;
+      overflow: hidden;
+      background: linear-gradient(270deg, #2254f4, #406dff);
+      box-shadow: 0 12px 30px 0 rgba(34, 84, 244, 0.2);
+    }
+    .icon-zan:hover {
+      background: linear-gradient(270deg, #406dff, #2254f4);
+    }
+  }
   .hr {
     border-bottom: 1px solid #e2dbdb;
     margin: 15px 0;
@@ -66,11 +88,9 @@ const { Content } = Layout
 const { TextArea } = Input
 
 const ArticleDetails = ({ match }) => {
-  const [artContent, setArtContent] = useState(() => '') //文章内容
-  const [artCommentList, setArtCommentList] = useState(() => []) //评论列表
-  const [likes, setLikes] = useState(0)
-  const [dislikes, setDislikes] = useState(0)
-  const [action, setAction] = useState(null)
+  const [artObject, setArtObject] = useState({}) //文章内容
+  const [praiseCount, setPraiseCount] = useState(0) //文章内容
+  const [artCommentList, setArtCommentList] = useState([]) //评论列表
 
   const [pageNo, setPageNo] = useState(1)
   const [pageSize, setPageSize] = useState(10)
@@ -81,16 +101,20 @@ const ArticleDetails = ({ match }) => {
 
   const commentRef = useRef()
 
-  const like = () => {
-    setLikes(1)
-    setDislikes(0)
-    setAction('liked')
+  const commentLike = (item, i) => {
+    commentPraiseFun(item, 1, i)
   }
 
-  const dislike = () => {
-    setLikes(0)
-    setDislikes(1)
-    setAction('disliked')
+  const commentDislike = (item, i) => {
+    commentPraiseFun(item, 2, i)
+  }
+
+  const replyLike = (item, i) => {
+    replyPraiseFun(item, 1, i)
+  }
+
+  const replyDislike = (item, i) => {
+    replyPraiseFun(item, 2, i)
   }
 
   const handleComment = (i) => {
@@ -100,7 +124,7 @@ const ArticleDetails = ({ match }) => {
         commentRef.current && commentRef.current.state
           ? commentRef.current.state.value
           : '',
-    }).then((res) => {
+    }).then(() => {
       commentRef.current.handleReset()
       setShowTextAreaArea('none')
       message.success('评论成功')
@@ -124,37 +148,6 @@ const ArticleDetails = ({ match }) => {
     })
   }
 
-  const actions = (item, i, bool) => [
-    <Tooltip key="comment-basic-like" title="Like">
-      <span onClick={like}>
-        {createElement(action === 'liked' ? LikeFilled : LikeOutlined)}
-        <span className="comment-action">{likes}</span>
-      </span>
-    </Tooltip>,
-    <Tooltip key="comment-basic-dislike" title="Dislike">
-      <span onClick={dislike}>
-        {React.createElement(
-          action === 'disliked' ? DislikeFilled : DislikeOutlined
-        )}
-        <span className="comment-action">{dislikes}</span>
-      </span>
-    </Tooltip>,
-
-    <span key="comment-basic-reply-to">
-      {bool ? (
-        <Button
-          onClick={() => {
-            setShowTextAreaArea('block')
-            setReplyItem(item)
-          }}
-          type="link"
-        >
-          回复
-        </Button>
-      ) : null}
-    </span>,
-  ]
-
   const commentListFunQuery = () => {
     commentListQuery({
       artId: match.params.id,
@@ -166,11 +159,46 @@ const ArticleDetails = ({ match }) => {
     })
   }
 
+  const handlePraise = () => {
+    articlePraise({
+      artId: match.params.id,
+    }).then((res) => {
+      setPraiseCount((x) => x + 1)
+    })
+  }
+
+  const commentPraiseFun = (item, type, i) => {
+    commentPraise({
+      comId: item._id,
+      type,
+    }).then((res) => {
+      document.getElementById('J-comment-praise-count' + i).innerText =
+        res.data.praiseCount
+      document.getElementById('J-comment-not-praise-count' + i).innerText =
+        res.data.notPraiseCount
+    })
+  }
+
+  const replyPraiseFun = (item, type, i) => {
+    replyPraise({
+      repId: item._id,
+      type,
+    }).then((res) => {
+      document.getElementById('J-reply-praise-count' + i).innerText =
+        res.data.praiseCount
+      document.getElementById('J-reply-not-praise-count' + i).innerText =
+        res.data.notPraiseCount
+    })
+  }
+
   useEffect(() => {
     articleDetails({
       id: match.params.id,
     }).then((res) => {
-      if (res.data) setArtContent(res.data.content)
+      if (res.data) {
+        setArtObject(res.data)
+        setPraiseCount(res.data.praiseCount)
+      }
     })
 
     // document.addEventListener(
@@ -196,9 +224,66 @@ const ArticleDetails = ({ match }) => {
     setPageSize(size)
   }
 
+  const commentActions = (item, i, bool) => [
+    <Tooltip key={i} title="Like">
+      <span onClick={() => commentLike(item, i)}>
+        {createElement(LikeFilled)}
+        <span id={'J-comment-praise-count' + i} className="comment-action">
+          {item.praiseCount}
+        </span>
+      </span>
+    </Tooltip>,
+    <Tooltip key={i} title="Dislike">
+      <span onClick={() => commentDislike(item, i)}>
+        {React.createElement(DislikeOutlined)}
+        <span id={'J-comment-not-praise-count' + i} className="comment-action">
+          {item.notPraiseCount}
+        </span>
+      </span>
+    </Tooltip>,
+
+    <span key="comment-basic-reply-to">
+      <Button
+        onClick={() => {
+          setShowTextAreaArea('block')
+          setReplyItem(item)
+        }}
+        type="link"
+      >
+        回复
+      </Button>
+    </span>,
+  ]
+
+  const replyActions = (item, i) => [
+    <Tooltip key={i} title="Like">
+      <span onClick={() => replyLike(item, i)}>
+        {createElement(LikeFilled)}
+        <span id={'J-reply-praise-count' + i} className="comment-action">
+          {item.praiseCount}
+        </span>
+      </span>
+    </Tooltip>,
+    <Tooltip key={i} title="Dislike">
+      <span onClick={() => replyDislike(item, i)}>
+        {React.createElement(DislikeOutlined)}
+        <span id={'J-reply-not-praise-count' + i} className="comment-action">
+          {item.notPraiseCount}
+        </span>
+      </span>
+    </Tooltip>,
+  ]
+
   return (
     <Wrapper>
-      <Content>{artContent}</Content>
+      <Content>{artObject.content}</Content>
+      <div className="zan-area">
+        <span
+          className="iconfont icon-zan"
+          onClick={() => handlePraise()}
+        ></span>
+        {praiseCount}
+      </div>
       <div className="hr"></div>
       <Button
         onClick={() => {
@@ -213,7 +298,7 @@ const ArticleDetails = ({ match }) => {
         return (
           <Comment
             key={i}
-            actions={actions(item, i, 1)}
+            actions={commentActions(item, i, 1)}
             author={<a>{item.user.userName}</a>}
             avatar={<Avatar src={item.user.avatar} alt={item.user.userName} />}
             content={<p>{item.content}</p>}
@@ -229,7 +314,7 @@ const ArticleDetails = ({ match }) => {
               return (
                 <Comment
                   key={'reply' + k}
-                  actions={actions(r, k, 0)}
+                  actions={replyActions(r, k, 0)}
                   author={<a>{r.user.userName}</a>}
                   avatar={<Avatar src={r.user.avatar} alt={r.user.userName} />}
                   content={<p>{r.content}</p>}

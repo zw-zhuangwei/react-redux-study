@@ -65,17 +65,17 @@ const Qzhome = ({ route, match }) => {
               actions={[
                 <IconText
                   icon={FolderViewOutlined}
-                  text={item.browse_count}
+                  text={item.browseCount ? item.browseCount : 0}
                   key="list-vertical-star-o"
                 />,
                 <IconText
                   icon={LikeOutlined}
-                  text={item.praise_count}
+                  text={item.praiseCount ? item.praiseCount : 0}
                   key="list-vertical-like-o"
                 />,
                 <IconText
                   icon={MessageOutlined}
-                  text={item.comment_count}
+                  text={item.commentCount ? item.commentCount : 0}
                   key="list-vertical-message"
                 />,
               ]}
