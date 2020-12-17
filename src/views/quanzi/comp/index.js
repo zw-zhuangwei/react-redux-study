@@ -1,4 +1,4 @@
-import ActiveUser from './ArtiveUser'
+import ActiveUser from './ActiveUser'
 import ArtRecommend from './ArtRecommend'
 import ArtList from './ArtList'
 import ArtCarousel from './ArtCarousel'

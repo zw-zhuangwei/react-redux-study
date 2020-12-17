@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { List, Avatar, Space } from 'antd'
 import {
   MessageOutlined,
@@ -11,7 +12,6 @@ import { articleQuery } from '@api/article'
 
 const Wrapper = styled.section`
   &.qz-art-list {
-    max-width: 700px;
     height: calc(100vh - 60px);
     overflow: auto;
     background: #fff;
@@ -24,7 +24,7 @@ const IconText = ({ icon, text }) => (
   </Space>
 )
 
-const ArtList = ({ route, match }) => {
+const ArtList = (props) => {
   const [listData, setListData] = useState([])
 
   const initData = () => {
@@ -70,10 +70,14 @@ const ArtList = ({ route, match }) => {
                   src={item.user && item.user[0] && item.user[0].avatar}
                 />
               }
-              title={<a href={`/article/details/${item._id}`}>{item.title}</a>}
+              title={
+                <Link to={`/article/details/${item._id}`}>{item.title}</Link>
+              }
               description={item.desc}
             />
-            {item.content}
+            {item.content.length > 100
+              ? item.content.substring(0, 100) + '...'
+              : item.content}
           </List.Item>
         )}
       />

@@ -9,7 +9,6 @@ const article = [
     routes: [
       {
         path: '/article/write',
-        exact: false,
         component: asyncLoader(() => import('@views/article/Write')),
       },
       {

@@ -5,7 +5,6 @@ import styled from 'styled-components'
 
 const Wrapper = styled.section`
   &.qz-carousel {
-    max-width: 700px;
   }
 `
 

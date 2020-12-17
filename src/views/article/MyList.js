@@ -58,7 +58,7 @@ const ArticleMyList = () => {
     },
     {
       title: '创建时间',
-      dataIndex: 'createAt',
+      dataIndex: 'createdAt',
       key: '3',
       width: 90,
       ellipsis: {

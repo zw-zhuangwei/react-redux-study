@@ -308,9 +308,9 @@ const ArticleDetails = ({ match }) => {
               content={<p>{item.content}</p>}
               datetime={
                 <Tooltip
-                  title={dayjs(item.createAt).format('YYYY-MM-DD HH:mm:ss')}
+                  title={dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}
                 >
-                  <span>{dayjs(item.createAt).fromNow()}</span>
+                  <span>{dayjs(item.createdAt).fromNow()}</span>
                 </Tooltip>
               }
             >
@@ -326,9 +326,9 @@ const ArticleDetails = ({ match }) => {
                     content={<p>{r.content}</p>}
                     datetime={
                       <Tooltip
-                        title={dayjs(r.createAt).format('YYYY-MM-DD HH:mm:ss')}
+                        title={dayjs(r.createdAt).format('YYYY-MM-DD HH:mm:ss')}
                       >
-                        <span>{dayjs(r.createAt).fromNow()}</span>
+                        <span>{dayjs(r.createdAt).fromNow()}</span>
                       </Tooltip>
                     }
                   ></Comment>
