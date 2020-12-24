@@ -9,5 +9,10 @@ export const register = (params) =>
 export const layout = (params) =>
   $request.setPromise(`POST`, '/api/user/layout', params)
 
-export const updateFace = (params) =>
-  $request.setPromise(`POST`, '/api/user/updateFace', params)
+// 获取七牛token
+export const getQiniuToken = (params) =>
+  $request.setPromise(`POST`, '/api/user/qiniuToken', params)
+
+// 修改头像
+export const uploadFace = (params) =>
+  $request.setPromise(`POST`, '/api/user/uploadFace', params)
