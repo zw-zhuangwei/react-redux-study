@@ -15,9 +15,9 @@ const Home = asyncLoader(() => import('@views/layout/Home'))
 const Qzhome = asyncLoader(() => import('@views/quanzi/Home'))
 const Login = asyncLoader(() => import('@views/account/Login'))
 const Register = asyncLoader(() => import('@views/account/Register'))
-const ArticleWrite = asyncLoader(() => import('@views/article/Write'))
+const ArticleWrite = asyncLoader(() => import('@views/person/article_write'))
 const ArticleDetails = asyncLoader(() => import('@views/article/Details'))
-const ArticleMyList = asyncLoader(() => import('@views/article/MyList'))
+const ArticleMyList = asyncLoader(() => import('@views/person/article_list'))
 const Demo1 = asyncLoader(() => import('@views/demo/Demo1'))
 const Demo2 = asyncLoader(() => import('@views/demo/Demo2'))
 const Demo3 = asyncLoader(() => import('@views/demo/Demo3'))
@@ -56,7 +56,7 @@ const RouterGroup = () => (
         />
         <Route
           exact
-          path="/article/write"
+          path="/person/article_write"
           component={withRouter(ArticleWrite)}
         />
         <Route
@@ -66,7 +66,7 @@ const RouterGroup = () => (
         />
         <Route
           exact
-          path="/article/my_list"
+          path="/person/article_list"
           component={withRouter(ArticleMyList)}
         />
         <Route exact path="/home" component={withRouter(Home)} />

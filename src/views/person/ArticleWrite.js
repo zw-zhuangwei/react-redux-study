@@ -4,7 +4,6 @@ import { Layout, Form, Input, Button, Select, message } from 'antd'
 import qs from 'query-string'
 import cookie from 'js-cookie'
 import E from 'wangeditor'
-import { articleInsert, articleModify, articleDetails } from '@api/article'
 
 const { Content } = Layout
 const { Option } = Select
@@ -30,7 +29,7 @@ const ArticleWrite = ({ route, match }) => {
     wEditor.create()
     setWEditor(wEditor)
     if (parmas._id) {
-      articleDetails({
+      $API.article.articleDetails({
         id: parmas._id,
       }).then((res) => {
         if (res.data) {
@@ -44,12 +43,12 @@ const ArticleWrite = ({ route, match }) => {
     }
   }, [form, parmas._id])
 
-  const onTypeSelect = () => {}
+  const onTypeSelect = () => { }
 
   const formSubmit = async () => {
     try {
       const v = await form.validateFields()
-      articleInsert({
+      $API.article.articleInsert({
         title: v.title,
         desc: v.desc,
         type: v.type,
@@ -72,7 +71,7 @@ const ArticleWrite = ({ route, match }) => {
   const formModify = async () => {
     try {
       const v = await form.validateFields()
-      articleModify({
+      $API.article.articleModify({
         id: parmas._id,
         title: v.title,
         desc: v.desc,
@@ -146,14 +145,14 @@ const ArticleWrite = ({ route, match }) => {
                 发布
               </Button>
             ) : (
-              <Button
-                onClick={formModify}
-                style={{ marginLeft: '48%' }}
-                type="primary"
-              >
-                修改
-              </Button>
-            )}
+                <Button
+                  onClick={formModify}
+                  style={{ marginLeft: '48%' }}
+                  type="primary"
+                >
+                  修改
+                </Button>
+              )}
           </Form.Item>
         </Form>
       </Content>

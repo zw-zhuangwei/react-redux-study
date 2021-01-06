@@ -11,8 +11,6 @@ import {
   EyeTwoTone,
 } from '@ant-design/icons'
 
-import { register } from '@api/account'
-
 const Wrapper = styled.section`
   padding: 4em;
   background: #f8f8f9;
@@ -39,7 +37,7 @@ const Wrapper = styled.section`
 const Register = () => {
   const history = useHistory()
   const _register = (params) => {
-    register(params).then((res) => {
+    $API.account.register(params).then((res) => {
       if (res.code === 200) {
         message.success(res.message)
         history.push('/account/login')

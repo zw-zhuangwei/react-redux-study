@@ -5,7 +5,7 @@ import { UserOutlined } from '@ant-design/icons'
 
 import styled from 'styled-components'
 
-import { activeUser } from '@api/home'
+import { activeUser } from '@api/modules/home'
 
 const { TabPane } = Tabs
 
@@ -41,7 +41,7 @@ const ActiveUser = ({ route, match }) => {
   const [userList, setUserList] = useState([])
 
   const activeUserQuery = (res) => {
-    activeUser().then((res) => {
+    $API.home.activeUser().then((res) => {
       setUserList(res.data)
     })
   }

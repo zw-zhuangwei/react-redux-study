@@ -5,8 +5,6 @@ import { Layout, Table, Space, message, Button, Modal } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import dayjs from 'dayjs'
 
-import { articleMyList, articleRemove } from '@api/article'
-
 const { confirm } = Modal
 
 const Wrapper = styled.section`
@@ -73,7 +71,7 @@ const ArticleMyList = () => {
       render: (text, record) => (
         <Space size="middle">
           <Link to={`/article/details/${record._id}`}>查看</Link>
-          <Link to={`/article/write?_id=${record._id}`}>修改</Link>
+          <Link to={`/person/article_write?_id=${record._id}`}>修改</Link>
           <Button type="link" onClick={() => handleRemoveArt(text, record)}>
             删除
           </Button>
@@ -83,7 +81,7 @@ const ArticleMyList = () => {
   ]
 
   useEffect(() => {
-    articleMyList({
+    $API.article.articleMyList({
       pageNo: pageNo,
       pageSize: pageSize,
     }).then((res) => {
@@ -93,7 +91,7 @@ const ArticleMyList = () => {
   }, [pageNo, pageSize])
 
   const handleInfiniteOnLoad = () => {
-    articleMyList({
+    $API.article.articleMyList({
       pageNo: pageNo,
       pageSize: pageSize,
     }).then((res) => {
@@ -114,7 +112,7 @@ const ArticleMyList = () => {
   //修改文章
   // const handleModifyArt = (text, record) => {
   //   history.push({
-  //     pathname: `/article/write?name=11`,  //这种方式?后面传值跳转后组件不刷新
+  //     pathname: `/person/article_write?name=11`,  //这种方式?后面传值跳转后组件不刷新
   //     parmas: { record },
   //   })
   // }
@@ -126,8 +124,8 @@ const ArticleMyList = () => {
       content: '确定删除此文章么',
       okText: '确定',
       cancelText: '取消',
-      onOk() {
-        articleRemove({
+      onOk () {
+        $API.article.articleRemove({
           id: record._id,
         }).then((res) => {
           message.success('删除成功')
@@ -149,17 +147,17 @@ const ArticleMyList = () => {
           pagination={
             count !== 0
               ? {
-                  total: count,
-                  defaultCurrent: pageNo,
-                  defaultPageSize: pageSize,
-                  pageSizeOptions: [10, 20, 50, 100, 200],
-                  showSizeChanger: true,
-                  showTotal: (total) => `总共${total}条`,
-                  onChange: (page, pageSize) =>
-                    handlePageChange(page, pageSize),
-                  onShowSizeChange: (current, pageSize) =>
-                    handlePageSizeChange(current, pageSize),
-                }
+                total: count,
+                defaultCurrent: pageNo,
+                defaultPageSize: pageSize,
+                pageSizeOptions: [10, 20, 50, 100, 200],
+                showSizeChanger: true,
+                showTotal: (total) => `总共${total}条`,
+                onChange: (page, pageSize) =>
+                  handlePageChange(page, pageSize),
+                onShowSizeChange: (current, pageSize) =>
+                  handlePageSizeChange(current, pageSize),
+              }
               : false
           }
         />

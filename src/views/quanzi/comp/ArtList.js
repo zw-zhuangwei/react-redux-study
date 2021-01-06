@@ -8,8 +8,6 @@ import {
 } from '@ant-design/icons'
 import styled from 'styled-components'
 
-import { articleQuery } from '@api/article'
-
 const Wrapper = styled.section`
   &.qz-art-list {
     height: calc(100vh - 60px);
@@ -28,7 +26,7 @@ const ArtList = (props) => {
   const [listData, setListData] = useState([])
 
   const initData = () => {
-    articleQuery().then((res) => {
+    $API.article.articleQuery().then((res) => {
       setListData(res.data)
     })
   }

@@ -5,9 +5,7 @@ import { Menu, Button, Dropdown, Avatar, Upload, message } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 //import { useSelector } from 'react-redux'
 import cookie from 'js-cookie'
-import { layout } from '@api/account'
 import { QcEventEmitter } from '.'
-import { getQiniuToken, uploadFace } from '@api/account'
 import logo from '../assets/img/logo.png'
 
 const Wrapper = styled.section`
@@ -17,8 +15,7 @@ const Wrapper = styled.section`
   .header {
     display: flex;
     justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
+    margin: 0 2%;
     height: 60px;
     .hearder-left-area {
       display: flex;
@@ -73,7 +70,7 @@ const LayHeader = () => {
   }
 
   const _layout = () => {
-    layout().then((res) => {
+    $API.account.layout().then((res) => {
       cookie.remove('token')
       cookie.remove('userInfo')
       setUserInfo(cookie.get('userInfo'))
@@ -81,14 +78,14 @@ const LayHeader = () => {
   }
 
   const _getQiniuToken = async (file) => {
-    let res = await getQiniuToken()  //此处为await 否则获取不到qiniuToken
+    let res = await $API.account.getQiniuToken()  //此处为await 否则获取不到qiniuToken
     setQiniuToken(res.data)
   }
 
   const _uploadChange = async (o) => {
     if (o.file.status === 'done') {
       let path = process.env.REACT_APP_STORAGE_DOMAIN + o.file.response.key
-      await uploadFace({ path })
+      await $API.account.uploadFace({ path })
       userInfo.avatar = path
       cookie.set('userInfo', JSON.stringify(userInfo))
       setUserInfo(JSON.parse(cookie.get('userInfo')))
@@ -103,7 +100,7 @@ const LayHeader = () => {
           type="link"
           onClick={() =>
             history.push({
-              pathname: '/article/write',
+              pathname: '/person/article_write',
             })
           }
         >
@@ -111,14 +108,14 @@ const LayHeader = () => {
         </Button>
       </Menu.Item>
       <Menu.Item key="2">
-        <Button type="link" onClick={() => history.push('/article/my_list')}>
+        <Button type="link" onClick={() => history.push('/person/article_list')}>
           管理博文
         </Button>
       </Menu.Item>
       <Menu.Item key="3">
         <Button
           type="link"
-          onClick={() => history.push('/article_third_party/artList')}
+          onClick={() => history.push('/person/article_resource')}
         >
           第三方资源
         </Button>

@@ -14,15 +14,6 @@ import {
   Empty,
 } from 'antd'
 import { DislikeOutlined, LikeFilled, FormOutlined } from '@ant-design/icons'
-import {
-  articleDetails,
-  articleComment,
-  articlePraise,
-  commentListQuery,
-  commentReply,
-  commentPraise,
-  replyPraise,
-} from '@api/article'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime) //实现moment的fromNow功能
@@ -119,7 +110,7 @@ const ArticleDetails = ({ match }) => {
   }
 
   const handleComment = (i) => {
-    articleComment({
+    $API.article.articleComment({
       artId: match.params.id,
       content:
         commentRef.current && commentRef.current.state
@@ -134,7 +125,7 @@ const ArticleDetails = ({ match }) => {
   }
 
   const handleReply = (item) => {
-    commentReply({
+    $API.article.commentReply({
       artId: match.params.id,
       comId: item._id,
       content:
@@ -150,7 +141,7 @@ const ArticleDetails = ({ match }) => {
   }
 
   const commentListFunQuery = () => {
-    commentListQuery({
+    $API.article.commentListQuery({
       artId: match.params.id,
       pageNo,
       pageSize,
@@ -161,7 +152,7 @@ const ArticleDetails = ({ match }) => {
   }
 
   const handlePraise = () => {
-    articlePraise({
+    $API.article.articlePraise({
       artId: match.params.id,
     }).then((res) => {
       setPraiseCount((x) => x + 1)
@@ -169,7 +160,7 @@ const ArticleDetails = ({ match }) => {
   }
 
   const commentPraiseFun = (item, type, i) => {
-    commentPraise({
+    $API.article.commentPraise({
       comId: item._id,
       type,
     }).then((res) => {
@@ -181,7 +172,7 @@ const ArticleDetails = ({ match }) => {
   }
 
   const replyPraiseFun = (item, type, i) => {
-    replyPraise({
+    $API.article.replyPraise({
       repId: item._id,
       type,
     }).then((res) => {
@@ -193,7 +184,7 @@ const ArticleDetails = ({ match }) => {
   }
 
   useEffect(() => {
-    articleDetails({
+    $API.article.articleDetails({
       id: match.params.id,
     }).then((res) => {
       if (res.data) {
@@ -338,8 +329,8 @@ const ArticleDetails = ({ match }) => {
           )
         })
       ) : (
-        <Empty description="暂无评论" imageStyle={{ marginTop: 70 }} />
-      )}
+          <Empty description="暂无评论" imageStyle={{ marginTop: 70 }} />
+        )}
       <div className="art-pagination-area">
         <Pagination
           total={count}
@@ -371,14 +362,14 @@ const ArticleDetails = ({ match }) => {
               评论
             </Button>
           ) : (
-            <Button
-              onClick={() => handleReply(replyItem)}
-              type="primary"
-              size="small"
-            >
-              回复
-            </Button>
-          )}
+              <Button
+                onClick={() => handleReply(replyItem)}
+                type="primary"
+                size="small"
+              >
+                回复
+              </Button>
+            )}
         </div>
       </div>
     </Wrapper>

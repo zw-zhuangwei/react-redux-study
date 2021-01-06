@@ -10,7 +10,7 @@ import {
   EyeInvisibleOutlined,
   EyeTwoTone,
 } from '@ant-design/icons'
-import { login } from '@api/account'
+
 import action from '@redux/action'
 
 const Wrapper = styled.section`
@@ -41,7 +41,7 @@ const Login = () => {
   const history = useHistory()
   const dispatch = useDispatch()
   const _login = (params) => {
-    login(params).then((res) => {
+    $API.account.login(params).then((res) => {
       if (res.code === 200) {
         cookie.set('userInfo', res.data.user)
         cookie.set('token', res.data.token)

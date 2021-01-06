@@ -3,13 +3,6 @@ import React, { useContext, useRef } from 'react'
 import { Table, Input, Button, Popconfirm, Form, message } from 'antd'
 import styled from 'styled-components'
 
-import {
-  articleThirdPartyQuery,
-  articleThirdPartyInsert,
-  articleThirdPartyModify,
-  articleThirdPartyRemove,
-} from '@api/articleThirdParty'
-
 const Wrapper = styled.section`
   .editable-cell-value-wrap {
     overflow: hidden;
@@ -226,7 +219,7 @@ class ArtThirdParty extends React.Component {
   }
 
   articleThirdPartyFunQuery = () => {
-    articleThirdPartyQuery().then((res) => {
+    $API.person.articleThirdPartyQuery().then((res) => {
       this.setState({
         dataSource: res.data,
       })
@@ -234,21 +227,21 @@ class ArtThirdParty extends React.Component {
   }
 
   articleThirdPartyFunRemove = (record) => {
-    articleThirdPartyRemove({ id: record._id }).then(() => {
+    $API.person.articleThirdPartyRemove({ id: record._id }).then(() => {
       message.success('删除成功')
       this.articleThirdPartyFunQuery()
     })
   }
 
   articleThirdPartyFunInsert = (record) => {
-    articleThirdPartyInsert(record).then(() => {
+    $API.person.articleThirdPartyInsert(record).then(() => {
       message.success('新增成功')
       this.articleThirdPartyFunQuery()
     })
   }
 
   articleThirdPartyFunModify = (record) => {
-    articleThirdPartyModify(record).then(() => {
+    $API.person.articleThirdPartyModify(record).then(() => {
       message.success('修改成功')
       this.articleThirdPartyFunQuery()
     })

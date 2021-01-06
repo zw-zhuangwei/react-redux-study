@@ -45,14 +45,7 @@ const demo = [
   {
     path: '/demo/hooks/define_hook',
     component: asyncLoader(() => import('@views/demo/hooks/DefineHook')),
-  },
-  {
-    path: '*',
-    // component: () => <Redirect to="/404" />,
-    render: () => (
-      <div style={{ textAlign: 'center', marginTop: 100 }}>Not Found Page</div>
-    ),
-  },
+  }
 ]
 
 export default demo

@@ -4,7 +4,7 @@ import {
   COUNTER_ASYNC_TEST,
 } from '@redux/type/counter'
 
-import * as test from '@api/test.js'
+import * as test from '@api/modules/test.js'
 
 const CounterAction = {
   counter: {

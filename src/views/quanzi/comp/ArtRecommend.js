@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react'
 import { Tabs, List, Avatar } from 'antd'
 import styled from 'styled-components'
-import { articleThirdPartyQuery } from '@api/articleThirdParty'
 const { TabPane } = Tabs
 
 const Wrapper = styled.section`
@@ -13,11 +12,10 @@ const Wrapper = styled.section`
     overflow: auto;
   }
 `
-
 const ArtRecommend = ({ route, match }) => {
   const [dataSource, setDataSource] = useState([])
   const articleThirdPartyFunQuery = () => {
-    articleThirdPartyQuery().then((res) => {
+    $API.person.articleThirdPartyQuery().then((res) => {
       setDataSource(res.data)
     })
   }

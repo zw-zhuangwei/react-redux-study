@@ -9,4 +9,12 @@ files.keys().forEach((key) => {
   }
 })
 
+routers.push({
+  path: '*',
+  // component: () => <Redirect to="/404" />,
+  render: () => (
+    <div style={{ textAlign: 'center', marginTop: 100 }}>Not Found Page</div>
+  ),
+})
+
 export default routers

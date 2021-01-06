@@ -4,7 +4,7 @@ import Loadable from 'react-loadable'
 const asyncLoader = (loader) => {
   return Loadable({
     loader,
-    loading(props) {
+    loading (props) {
       if (props.error) {
         return (
           <div>

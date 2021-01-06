@@ -8,17 +8,9 @@ const article = [
     component: LayHome,
     routes: [
       {
-        path: '/article/write',
-        component: asyncLoader(() => import('@views/article/Write')),
-      },
-      {
         path: '/article/details/:id',
         component: asyncLoader(() => import('@views/article/Details')),
-      },
-      {
-        path: '/article/my_list',
-        component: asyncLoader(() => import('@views/article/MyList')),
-      },
+      }
     ],
   },
 ]
