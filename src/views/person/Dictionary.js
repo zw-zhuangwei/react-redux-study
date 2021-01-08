@@ -1,111 +1,178 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react'
-import { Button, Table, Badge, Menu, Dropdown, message, Space } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from 'react'
+import { Button, Table, message, Modal } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+import dayjs from 'dayjs'
 
 import styled from 'styled-components'
-import { DicModal } from './comps'
+import { DicModalForm, DicModalDrawer } from './comps'
 
 const Wrapper = styled.section`
-  
+  width: 100%;
 `
 
-const menu = (
-  <Menu>
-    <Menu.Item>Action 1</Menu.Item>
-    <Menu.Item>Action 2</Menu.Item>
-  </Menu>
-);
+const { confirm } = Modal
 
 const Dictionary = () => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false)
+  const [dicList, setDicList] = useState([])
+  const [dicObj, setDicObj] = useState({})
+  const [dicFlag, setDicFlag] = useState('insert')
 
-  const expandedRowRender = () => {
-    const columns = [
-      { title: 'Date', dataIndex: 'date', key: 'date' },
-      { title: 'Name', dataIndex: 'name', key: 'name' },
-      {
-        title: 'Status',
-        key: 'state',
-        render: () => (
-          <span>
-            <Badge status="success" />
-            Finished
-          </span>
-        ),
-      },
-      { title: 'Upgrade Status', dataIndex: 'upgradeNum', key: 'upgradeNum' },
-      {
-        title: 'Action',
-        dataIndex: 'operation',
-        key: 'operation',
-        render: () => (
-          <Space size="middle">
-            <a>Pause</a>
-            <a>Stop</a>
-            <Dropdown overlay={menu}>
-              <a>
-                More <DownOutlined />
-              </a>
-            </Dropdown>
-          </Space>
-        ),
-      },
-    ];
-
-    const data = [];
-    for (let i = 0; i < 3; ++i) {
-      data.push({
-        key: i,
-        date: '2014-12-24 23:12:00',
-        name: 'This is production name',
-        upgradeNum: 'Upgraded: 56',
-      });
-    }
-    return <Table columns={columns} dataSource={data} pagination={false} />;
-  };
+  const [drawerVisible, setDrawerVisible] = useState(false)
 
   const columns = [
-    { title: '编码', dataIndex: 'code', key: 'code' },
-    { title: '名称', dataIndex: 'name', key: 'name' },
-    { title: '图标', dataIndex: 'icon', key: 'icon' },
-    { title: '等级', dataIndex: 'level', key: 'level' },
-    { title: '备注', dataIndex: 'remark', key: 'remark' },
-    { title: '创建时间', dataIndex: 'createdAt', key: 'createdAt' },
-    { title: '修改时间', dataIndex: 'updatedAt', key: 'updatedAt' },
     {
-      title: '操作', key: 'operation', render: () => <>
-        <a> 新增 </a>
-        <a> 修改 </a>
-        <a> 删除 </a>
-      </>
+      title: '#',
+      width: 40,
+      align: 'center',
+      key: '#',
+      render: (text, record, index) => `${index + 1}`,
     },
-  ];
+    {
+      title: '编码', dataIndex: 'code', key: 'code', width: 100, ellipsis: {
+        showTitle: false,
+      },
+    },
+    {
+      title: '名称', dataIndex: 'name', key: 'name', width: 100, ellipsis: {
+        showTitle: false,
+      },
+    },
+    {
+      title: '等级', dataIndex: 'level', key: 'level', width: 70, ellipsis: {
+        showTitle: false,
+      },
+    },
+    {
+      title: '图标', dataIndex: 'icon', key: 'icon', width: 90, ellipsis: {
+        showTitle: false,
+      },
+    },
+    {
+      title: '备注', dataIndex: 'remark', key: 'remark', width: 120, ellipsis: {
+        showTitle: false,
+      },
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      width: 180,
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (time) => dayjs(time).format('YYYY-MM-DD HH:mm:ss'),
+    },
+    {
+      title: '修改时间',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
+      width: 180,
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (time) => dayjs(time).format('YYYY-MM-DD HH:mm:ss'),
+    },
+    {
+      title: '操作',
+      key: 'operation',
+      width: 150,
+      fixed: 'right',
+      render: (text, record) => (
+        <>
+          <a onClick={() => dictionaryItemLook(text, record)}> 查看 </a>
+          <a onClick={() => dictionaryModifyBefore(text, record)}> 修改 </a>
+          {/* <a onClick={() => dictionaryRemove(text, record)}> 删除 </a> */}
+        </>
+      ),
+    },
+  ]
 
-  const data = [];
-  for (let i = 0; i < 3; ++i) {
-    data.push({
-      key: i,
-      code: 'Screem',
-      name: 'iOS',
-      icon: '10.3.4.5654',
-      level: 500,
-      remark: 'Jack',
-      createdAt: '2014-12-24 23:12:00',
-      updatedAt: '2014-12-24 23:12:00',
-    });
+  // 数据字典查询
+  const dictionaryQuery = () => {
+    $API.person.dictionaryQuery().then((res) => {
+      setDicList(res.data)
+      //message.success('查询成功')
+    })
   }
 
+  // 数据字典新增前
   const handleAdd = () => {
-    // $API.person.articleThirdPartyRemove({ id: 1 }).then(() => {
-    //   message.success('新增成功')
-    // })
+    setDicFlag('insert')
+    setDicObj({})
     setVisible(true)
   }
 
-  const handleShowHide = () => {
-    setVisible(false)
+  // 数据字典新增
+  const dictionaryInsert = (v) => {
+    $API.person.dictionaryInsert(v).then((res) => {
+      setVisible(false)
+      dictionaryQuery()
+      message.success('新增成功')
+    })
   }
+
+  // 数据字典修改前
+  const dictionaryModifyBefore = (text, record) => {
+    setDicFlag('update')
+    setDicObj(record)
+    setVisible(true)
+  }
+
+  // 数据字典修改
+  const dictionaryModify = (v) => {
+    $API.person.dictionaryModify(v).then((res) => {
+      setVisible(false)
+      dictionaryQuery()
+      message.success('修改成功')
+    })
+  }
+
+  // 数据字典删除
+  const dictionaryRemove = (text, record) => {
+    confirm({
+      icon: <ExclamationCircleOutlined />,
+      content: '确定删除此数据字典么',
+      okText: '确定',
+      cancelText: '取消',
+      onOk () {
+        $API.person
+          .dictionaryRemove({
+            id: record._id,
+          })
+          .then((res) => {
+            dictionaryQuery()
+            message.success('删除成功')
+          })
+      },
+    })
+  }
+
+  const handleEdit = (v, flag) => {
+    if (flag === 'insert') {
+      dictionaryInsert(v)
+    } else {
+      dictionaryModify(v)
+    }
+  }
+
+  const dictionaryItemLook = (text, record) => {
+    setDicObj(record)
+    setDrawerVisible(true)
+  }
+
+  const handleCancel = (bool) => {
+    setVisible(bool)
+  }
+
+  const drawerClose = (bool) => {
+    setDrawerVisible(bool)
+  }
+
+  useEffect(() => {
+    dictionaryQuery()
+  }, [])
 
   return (
     <Wrapper>
@@ -117,27 +184,35 @@ const Dictionary = () => {
         }}
       >
         新增
-        </Button>
+      </Button>
       <Table
+        rowKey={(record) => record._id}
         columns={columns}
-        expandable={{ expandedRowRender }}
-        dataSource={data}
+        dataSource={dicList}
+        scroll={{ y: 550 }}
+        bordered
+        pagination={{
+          pageSizeOptions: [10, 20, 50, 100, 200],
+          showSizeChanger: true,
+          showTotal: (total) => `总共${total}条`,
+        }}
       />
 
-      {/* <Modal
-        title="新增"
+      <DicModalForm
         visible={visible}
-        onOk={() => setVisible(false)}
-        onCancel={() => setVisible(false)}
-        width={500}
-      >
-        <p>some contents...</p>
-        <p>some contents...</p>
-        <p>some contents...</p>
-      </Modal> */}
-      <DicModal visible={visible} handleShowHide={handleShowHide} />
+        flag={dicFlag}
+        data={dicObj}
+        handleEdit={handleEdit}
+        handleCancel={handleCancel}
+      />
+
+      <DicModalDrawer
+        visible={drawerVisible}
+        handleClose={drawerClose}
+        data={dicObj}
+      />
     </Wrapper>
-  );
+  )
 }
 
 export default Dictionary

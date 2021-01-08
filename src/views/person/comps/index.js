@@ -1,4 +1,6 @@
-import DicModal from './DicModal'
+import DicModalForm from './DicModalForm'
+import DicModalDrawer from './DicModalDrawer'
+import DicItemModalForm from './DicItemModalForm'
 
 
-export { DicModal }
+export { DicModalForm, DicModalDrawer, DicItemModalForm }

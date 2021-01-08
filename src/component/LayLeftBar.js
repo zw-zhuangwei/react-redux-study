@@ -14,7 +14,7 @@ const LayLeftBar = () => {
   return (
     <>
       <Menu
-        style={{ minWidth: 220, maxWidth: 220, height: 800, marginRight: 10 }}
+        style={{ height: '100%' }}
         defaultSelectedKeys={['1']}
         defaultOpenKeys={['sub1']}
         mode='inline'
