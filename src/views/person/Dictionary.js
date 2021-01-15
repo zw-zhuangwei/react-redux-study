@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react'
-import { Button, Table, message, Modal } from 'antd'
-import { ExclamationCircleOutlined } from '@ant-design/icons'
+import { Button, Table, message } from 'antd'
+// import { ExclamationCircleOutlined } from '@ant-design/icons'
 import dayjs from 'dayjs'
 
 import styled from 'styled-components'
@@ -11,7 +11,7 @@ const Wrapper = styled.section`
   width: 100%;
 `
 
-const { confirm } = Modal
+// const { confirm } = Modal
 
 const Dictionary = () => {
   const [visible, setVisible] = useState(false)
@@ -40,17 +40,39 @@ const Dictionary = () => {
       },
     },
     {
-      title: '等级', dataIndex: 'level', key: 'level', width: 70, ellipsis: {
-        showTitle: false,
-      },
-    },
-    {
       title: '图标', dataIndex: 'icon', key: 'icon', width: 90, ellipsis: {
         showTitle: false,
       },
     },
     {
       title: '备注', dataIndex: 'remark', key: 'remark', width: 120, ellipsis: {
+        showTitle: false,
+      },
+    },
+    {
+      title: '扩展字段1',
+      dataIndex: 'extend01',
+      key: 'extend01',
+      width: 100,
+      ellipsis: {
+        showTitle: false,
+      },
+    },
+    {
+      title: '扩展字段2',
+      dataIndex: 'extend02',
+      key: 'extend02',
+      width: 100,
+      ellipsis: {
+        showTitle: false,
+      },
+    },
+    {
+      title: '扩展字段3',
+      dataIndex: 'extend03',
+      key: 'extend03',
+      width: 100,
+      ellipsis: {
         showTitle: false,
       },
     },
@@ -88,6 +110,13 @@ const Dictionary = () => {
       ),
     },
   ]
+
+  // 数据字典查询
+  const dictionaryEnumMap = () => {
+    $API.person.dictionaryEnumMap().then((res) => {
+      console.log(res)
+    })
+  }
 
   // 数据字典查询
   const dictionaryQuery = () => {
@@ -130,24 +159,24 @@ const Dictionary = () => {
   }
 
   // 数据字典删除
-  const dictionaryRemove = (text, record) => {
-    confirm({
-      icon: <ExclamationCircleOutlined />,
-      content: '确定删除此数据字典么',
-      okText: '确定',
-      cancelText: '取消',
-      onOk () {
-        $API.person
-          .dictionaryRemove({
-            id: record._id,
-          })
-          .then((res) => {
-            dictionaryQuery()
-            message.success('删除成功')
-          })
-      },
-    })
-  }
+  // const dictionaryRemove = (text, record) => {
+  //   confirm({
+  //     icon: <ExclamationCircleOutlined />,
+  //     content: '确定删除此数据字典么',
+  //     okText: '确定',
+  //     cancelText: '取消',
+  //     onOk () {
+  //       $API.person
+  //         .dictionaryRemove({
+  //           id: record._id,
+  //         })
+  //         .then((res) => {
+  //           dictionaryQuery()
+  //           message.success('删除成功')
+  //         })
+  //     },
+  //   })
+  // }
 
   const handleEdit = (v, flag) => {
     if (flag === 'insert') {
@@ -172,6 +201,7 @@ const Dictionary = () => {
 
   useEffect(() => {
     dictionaryQuery()
+    dictionaryEnumMap()
   }, [])
 
   return (
@@ -198,19 +228,22 @@ const Dictionary = () => {
         }}
       />
 
-      <DicModalForm
-        visible={visible}
-        flag={dicFlag}
-        data={dicObj}
-        handleEdit={handleEdit}
-        handleCancel={handleCancel}
-      />
+      {visible ?
+        <DicModalForm
+          visible={visible}
+          flag={dicFlag}
+          data={dicObj}
+          handleEdit={handleEdit}
+          handleCancel={handleCancel}
+        /> : void 0}
 
-      <DicModalDrawer
-        visible={drawerVisible}
-        handleClose={drawerClose}
-        data={dicObj}
-      />
+
+      {drawerVisible ?
+        <DicModalDrawer
+          visible={drawerVisible}
+          handleClose={drawerClose}
+          data={dicObj}
+        /> : void 0}
     </Wrapper>
   )
 }

@@ -48,4 +48,8 @@ export const dictionaryItemModify = (params) =>
 export const dictionaryItemRemove = (params) =>
   $request.setPromise(`POST`, '/api/commonEnum/itemRemove', params)
 
+//数据字典明细删除
+export const dictionaryEnumMap = (params) =>
+  $request.setPromise(`GET`, '/api/commonEnum/enumMap', params)
+
 

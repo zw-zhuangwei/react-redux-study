@@ -65,11 +65,6 @@ const DictionaryDrawer = ({ visible, handleClose, data }) => {
       },
     },
     {
-      title: '等级', dataIndex: 'level', key: 'level', width: 70, ellipsis: {
-        showTitle: false,
-      },
-    },
-    {
       title: '图标', dataIndex: 'icon', key: 'icon', width: 120,
       ellipsis: {
         showTitle: false,
@@ -80,6 +75,33 @@ const DictionaryDrawer = ({ visible, handleClose, data }) => {
       dataIndex: 'remark',
       key: 'remark',
       width: 120,
+      ellipsis: {
+        showTitle: false,
+      },
+    },
+    {
+      title: '扩展字段1',
+      dataIndex: 'extend01',
+      key: 'extend01',
+      width: 100,
+      ellipsis: {
+        showTitle: false,
+      },
+    },
+    {
+      title: '扩展字段2',
+      dataIndex: 'extend02',
+      key: 'extend02',
+      width: 100,
+      ellipsis: {
+        showTitle: false,
+      },
+    },
+    {
+      title: '扩展字段3',
+      dataIndex: 'extend03',
+      key: 'extend03',
+      width: 100,
       ellipsis: {
         showTitle: false,
       },

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect } from 'react'
-import { Form, Input, Modal, Row, Col, Select } from 'antd'
+import { Form, Input, Modal, Row, Col } from 'antd'
 
 import styled from 'styled-components'
 
@@ -10,8 +10,6 @@ const Wrapper = styled.section`
     padding-right: 50px;
   }
 `
-const { Option } = Select
-
 const Dictionary = ({ visible, handleEdit, handleCancel, data, flag }) => {
   const [form] = Form.useForm()
 
@@ -20,7 +18,7 @@ const Dictionary = ({ visible, handleEdit, handleCancel, data, flag }) => {
   }
 
   const handleSubmit = (v) => {
-    handleEdit(v, flag)
+    handleEdit({ ...data, ...v }, flag)
   }
 
   useEffect(() => {
@@ -80,42 +78,29 @@ const Dictionary = ({ visible, handleEdit, handleCancel, data, flag }) => {
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item
-                label="等级"
-                name="level"
-                rules={[{ required: true, message: '等级必填' }]}
-              >
-                <Select>
-                  <Option value="1">1</Option>
-                  <Option value="2">2</Option>
-                  <Option value="3">3</Option>
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col span={12}>
               <Form.Item label="图标" name="icon">
                 <Input placeholder="图标" />
               </Form.Item>
             </Col>
-          </Row>
-          <Row gutter={16}>
             <Col span={12}>
-              <Form.Item label="扩展字段1" name="icon">
+              <Form.Item label="扩展字段1" name="extend01">
                 <Input placeholder="扩展字段1" />
               </Form.Item>
             </Col>
+          </Row>
+          <Row gutter={16}>
             <Col span={12}>
-              <Form.Item label="扩展字段2" name="icon">
+              <Form.Item label="扩展字段2" name="extend02">
                 <Input placeholder="扩展字段2" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="扩展字段3" name="extend03">
+                <Input placeholder="扩展字段3" />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item label="扩展字段3" name="remark">
-                <Input placeholder="扩展字段3" />
-              </Form.Item>
-            </Col>
             <Col span={12}>
               <Form.Item label="备注" name="remark">
                 <Input.TextArea placeholder="备注" />

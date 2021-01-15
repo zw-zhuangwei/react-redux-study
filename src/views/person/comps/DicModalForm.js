@@ -1,12 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect } from 'react'
-import { Form, Input, Modal, Select } from 'antd'
+import { Form, Input, Modal, Row, Col } from 'antd'
 
 import styled from 'styled-components'
 
 const Wrapper = styled.section``
-
-const { Option } = Select
 
 const Dictionary = ({ visible, handleEdit, handleCancel, data, flag }) => {
   const [form] = Form.useForm()
@@ -16,7 +14,7 @@ const Dictionary = ({ visible, handleEdit, handleCancel, data, flag }) => {
   }
 
   const handleSubmit = (v) => {
-    handleEdit(v, flag)
+    handleEdit({ ...data, ...v }, flag)
   }
 
   useEffect(() => {
@@ -32,56 +30,68 @@ const Dictionary = ({ visible, handleEdit, handleCancel, data, flag }) => {
       <Modal
         getContainer={false}
         title={flag === 'insert' ? '新增' : '编辑'}
-        width={450}
+        width={650}
         visible={visible}
         onOk={() => handleOk()}
         onCancel={() => handleCancel(false)}
       >
         <Form
           form={form}
-          labelCol={{ span: 3, offset: 0 }}
+          labelCol={{ span: 7, offset: 0 }}
           name="dictionary"
           initialValues={form}
           onFinish={handleSubmit}>
-          <Form.Item
-            label="编码"
-            name="code"
-            rules={[{ required: true, message: '编码必填' }]}
-          >
-            <Input disabled={flag === 'insert' ? false : true} placeholder="编码" />
-          </Form.Item>
-          <Form.Item
-            label="名称"
-            name="name"
-            rules={[{ required: true, message: '名称必填' }]}
-          >
-            <Input placeholder="名称" />
-          </Form.Item>
-
-          <Form.Item
-            label="等级"
-            name="level"
-            rules={[{ required: true, message: '等级必填' }]}
-          >
-            <Select>
-              <Option value="1">1</Option>
-              <Option value="2">2</Option>
-              <Option value="3">3</Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            label="图标"
-            name="icon"
-          >
-            <Input placeholder="图标" />
-          </Form.Item>
-          <Form.Item
-            label="备注"
-            name="remark"
-          >
-            <Input.TextArea placeholder="备注" />
-          </Form.Item>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                label="编码"
+                name="code"
+                rules={[{ required: true, message: '编码必填' }]}
+              >
+                <Input disabled={flag === 'insert' ? false : true} placeholder="编码" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="名称"
+                name="name"
+                rules={[{ required: true, message: '名称必填' }]}
+              >
+                <Input placeholder="名称" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="图标" name="icon">
+                <Input placeholder="图标" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="扩展字段1" name="extend01">
+                <Input placeholder="扩展字段1" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="扩展字段2" name="extend02">
+                <Input placeholder="扩展字段2" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="扩展字段3" name="extend03">
+                <Input placeholder="扩展字段3" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="备注" name="remark">
+                <Input.TextArea placeholder="备注" />
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </Modal>
     </Wrapper>
