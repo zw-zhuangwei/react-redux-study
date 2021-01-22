@@ -1,0 +1,1 @@
+export const COMMON_ENUMS = 'COMMON_ENUMS'  //公共枚举

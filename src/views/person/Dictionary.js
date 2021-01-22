@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react'
-import { Button, Table, message } from 'antd'
-// import { ExclamationCircleOutlined } from '@ant-design/icons'
+import { Button, Table, message, Modal } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 import dayjs from 'dayjs'
+
+import cookie from 'js-cookie'
 
 import styled from 'styled-components'
 import { DicModalForm, DicModalDrawer } from './comps'
@@ -11,7 +13,7 @@ const Wrapper = styled.section`
   width: 100%;
 `
 
-// const { confirm } = Modal
+const { confirm } = Modal
 
 const Dictionary = () => {
   const [visible, setVisible] = useState(false)
@@ -30,12 +32,12 @@ const Dictionary = () => {
       render: (text, record, index) => `${index + 1}`,
     },
     {
-      title: '编码', dataIndex: 'code', key: 'code', width: 100, ellipsis: {
+      title: '编码', dataIndex: 'code', key: 'code', width: 180, ellipsis: {
         showTitle: false,
       },
     },
     {
-      title: '名称', dataIndex: 'name', key: 'name', width: 100, ellipsis: {
+      title: '名称', dataIndex: 'name', key: 'name', width: 200, ellipsis: {
         showTitle: false,
       },
     },
@@ -105,7 +107,7 @@ const Dictionary = () => {
         <>
           <a onClick={() => dictionaryItemLook(text, record)}> 查看 </a>
           <a onClick={() => dictionaryModifyBefore(text, record)}> 修改 </a>
-          {/* <a onClick={() => dictionaryRemove(text, record)}> 删除 </a> */}
+          <a onClick={() => dictionaryRemove(text, record)}> 删除 </a>
         </>
       ),
     },
@@ -114,7 +116,11 @@ const Dictionary = () => {
   // 数据字典查询
   const dictionaryEnumMap = () => {
     $API.person.dictionaryEnumMap().then((res) => {
-      console.log(res)
+      cookie.set('COMMON_ENUMS', JSON.stringify(res.data))
+
+      setTimeout(() => {
+        console.log(JSON.parse(cookie.get('COMMON_ENUMS')))
+      }, 2000);
     })
   }
 
@@ -159,24 +165,24 @@ const Dictionary = () => {
   }
 
   // 数据字典删除
-  // const dictionaryRemove = (text, record) => {
-  //   confirm({
-  //     icon: <ExclamationCircleOutlined />,
-  //     content: '确定删除此数据字典么',
-  //     okText: '确定',
-  //     cancelText: '取消',
-  //     onOk () {
-  //       $API.person
-  //         .dictionaryRemove({
-  //           id: record._id,
-  //         })
-  //         .then((res) => {
-  //           dictionaryQuery()
-  //           message.success('删除成功')
-  //         })
-  //     },
-  //   })
-  // }
+  const dictionaryRemove = (text, record) => {
+    confirm({
+      icon: <ExclamationCircleOutlined />,
+      content: '确定删除此数据字典么',
+      okText: '确定',
+      cancelText: '取消',
+      onOk () {
+        $API.person
+          .dictionaryRemove({
+            id: record._id,
+          })
+          .then((res) => {
+            dictionaryQuery()
+            message.success('删除成功')
+          })
+      },
+    })
+  }
 
   const handleEdit = (v, flag) => {
     if (flag === 'insert') {

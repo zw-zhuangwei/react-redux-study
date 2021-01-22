@@ -5,6 +5,8 @@ import qs from 'query-string'
 import cookie from 'js-cookie'
 import E from 'wangeditor'
 
+import Mixins from '@utils/mixins'
+
 const { Content } = Layout
 const { Option } = Select
 
@@ -13,6 +15,7 @@ const ArticleWrite = ({ route, match }) => {
   const history = useHistory()
   const [form] = Form.useForm()
   const [wEditor, setWEditor] = useState({})
+  const [typeArr, setTypeArr] = useState([])
 
   const initEditor = () => {
     const wEditor = new E('#wEditor')
@@ -42,6 +45,10 @@ const ArticleWrite = ({ route, match }) => {
       form.resetFields() //清空表单
     }
   }, [form, parmas._id])
+
+  useEffect(() => {
+    setTypeArr(Mixins.formatEnums('categoryTypeEnum'))
+  }, [])
 
   const onTypeSelect = () => { }
 
@@ -127,9 +134,11 @@ const ArticleWrite = ({ route, match }) => {
               allowClear
               style={{ zIndex: 10000 }}
             >
-              <Option value="javascript">javascript</Option>
-              <Option value="html">html</Option>
-              <Option value="css">css</Option>
+              {
+                typeArr.map((item, i) => {
+                  return <Option key={i} value={item.code}>{item.name}</Option>
+                })
+              }
             </Select>
           </Form.Item>
           <Form.Item label="内容" required>

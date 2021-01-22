@@ -21,6 +21,7 @@ const Wrapper = styled.section`
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
       .logo {
         width: 40px;
         height: 40px;
@@ -147,7 +148,7 @@ const LayHeader = () => {
   return (
     <Wrapper>
       <div className="header">
-        <div className="hearder-left-area">
+        <div className="hearder-left-area" onClick={() => history.push('/qzhome/home')}>
           <img className="logo" src={logo} alt="logo" />
         </div>
         <div className="hearder-right-area">

@@ -91,7 +91,9 @@ const ArticleDetails = ({ match }) => {
   const [showTextAreaArea, setShowTextAreaArea] = useState('none')
   const [replyItem, setReplyItem] = useState(null)
 
-  const commentRef = useRef()
+  const [textAreaValue, setTextAreaValue] = useState('')
+
+  // const commentRef = useRef()
 
   const commentLike = (item, i) => {
     commentPraiseFun(item, 1, i)
@@ -112,12 +114,10 @@ const ArticleDetails = ({ match }) => {
   const handleComment = (i) => {
     $API.article.articleComment({
       artId: match.params.id,
-      content:
-        commentRef.current && commentRef.current.state
-          ? commentRef.current.state.value
-          : '',
+      content: textAreaValue,
     }).then(() => {
-      commentRef.current.handleReset()
+      // commentRef.current.handleReset()
+      setTextAreaValue('')
       setShowTextAreaArea('none')
       message.success('评论成功')
       commentListFunQuery()
@@ -128,14 +128,12 @@ const ArticleDetails = ({ match }) => {
     $API.article.commentReply({
       artId: match.params.id,
       comId: item._id,
-      content:
-        commentRef.current && commentRef.current.state
-          ? commentRef.current.state.value
-          : '',
+      content: textAreaValue,
     }).then((res) => {
-      commentRef.current.handleReset()
+      // commentRef.current.handleReset()
+      setTextAreaValue('')
       setShowTextAreaArea('none')
-      message.success('评论成功')
+      message.success('回复成功')
       commentListFunQuery()
     })
   }
@@ -351,7 +349,9 @@ const ArticleDetails = ({ match }) => {
             !replyItem ? '请输入文章评论' : '@' + replyItem.user.userName
           }
           rows={3}
-          ref={commentRef}
+          value={textAreaValue}
+          onChange={(v) => setTextAreaValue(v.target.value)}
+        // ref={commentRef}
         />
         <div className="art-comment-btn">
           <Button onClick={() => setShowTextAreaArea('none')} size="small">

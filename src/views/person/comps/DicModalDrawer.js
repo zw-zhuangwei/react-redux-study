@@ -32,7 +32,7 @@ const DictionaryDrawer = ({ visible, handleClose, data }) => {
       title: '编码',
       dataIndex: 'parentCode',
       key: 'parentCode',
-      width: 90,
+      width: 150,
       ellipsis: {
         showTitle: false,
       },
@@ -41,7 +41,7 @@ const DictionaryDrawer = ({ visible, handleClose, data }) => {
       title: '名称',
       dataIndex: 'parentName',
       key: 'parentName',
-      width: 100,
+      width: 150,
       ellipsis: {
         showTitle: false,
       },

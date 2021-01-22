@@ -21,6 +21,7 @@ module.exports = override(
     '@views': resolve('./src/views'),
     '@utils': resolve('./src/utils'),
     '@redux': resolve('./src/redux'),
+    '@config': resolve('./src/config'),
   }),
   /* antd组件按需加载 */
   fixBabelImports('import', {
