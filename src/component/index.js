@@ -1,4 +1,6 @@
-import LayHeader from "./Header";
-import Chat from "./Chat";
+import LayHeader from './LayHeader'
+import LayLeftBar from './LayLeftBar'
+import Chat from './Chat/Chat'
+import QcEventEmitter from './QcEventEmitter'
 
-export { LayHeader, Chat };
+export { LayHeader, LayLeftBar, Chat, QcEventEmitter }

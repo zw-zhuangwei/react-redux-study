@@ -1,65 +1,55 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import styled from "styled-components";
+import React from 'react'
 
-import { LayHeader, Chat } from "../../component";
+import styled from 'styled-components'
+
+import {
+  ArtList,
+  ArtCarousel,
+  ActiveUser,
+  ArtRecommend,
+  ArtDrawer,
+} from './comp'
 
 const Wrapper = styled.section`
   &.qz-home {
-    height: 100%;
+    width: 1200px;
+    height: calc(100vh - 60px);
     display: flex;
-    flex-direction: column;
-    .qz-header {
-      flex: 1;
-      border: 1px solid blue;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    justify-content: space-between;
+    overflow: auto;
+    background: #f6f6f6;
+    margin: 0 auto;
+    .qz-home-left {
+      width: 49%;
+      .qz-carousel {
+      }
+      .qz-art-list {
+      }
     }
-    .qz-container {
-      flex: 12;
-      display: flex;
-      flex-direction: row;
-      .qz-filter {
-        flex: 1;
-        background-color: yellow;
+    .qz-home-right {
+      width: 49%;
+      .qz-recommend {
+        margin-bottom: 10px;
       }
-      .qz-main {
-        flex: 5;
-        background-color: green;
-      }
-      .qz-chat {
-        flex: 2;
+      .qz-active-user {
       }
     }
   }
-`;
+`
 
-class Qzhome extends Component {
-  render() {
-    return (
-      <Wrapper className="qz-home">
-        <header className="qz-header">
-          <LayHeader history={this.props.history} />
-        </header>
-
-        <div className="qz-container">
-          <aside className="qz-filter">左边</aside>
-          <main className="qz-main">中间main区域</main>
-          <aside className="qz-chat">
-            <Chat height={document.documentElement.clientHeight - 100} />
-          </aside>
-        </div>
-      </Wrapper>
-    );
-  }
+const Qzhome = ({ route, match }) => {
+  return (
+    <Wrapper className="qz-home">
+      <div className="qz-home-left">
+        <ArtCarousel />
+        <ArtList />
+      </div>
+      <div className="qz-home-right">
+        <ArtRecommend />
+        <ActiveUser />
+      </div>
+      <ArtDrawer />
+    </Wrapper>
+  )
 }
-
-let mapStateToProps = (state) => {
-  return {
-    count: state.counter.count,
-  };
-};
-
-// Connected Component
-export default connect(mapStateToProps)(Qzhome);
+export default Qzhome

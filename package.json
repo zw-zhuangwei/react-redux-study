@@ -3,40 +3,52 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "antd": "^4.4.1",
-    "axios": "^0.19.2",
-    "braft-editor": "^2.3.9",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "@testing-library/jest-dom": "^5.11.5",
+    "@testing-library/react": "^11.1.2",
+    "@testing-library/user-event": "^12.2.2",
+    "antd": "^4.10.0",
+    "axios": "^0.21.0",
+    "dayjs": "^1.9.6",
+    "events": "^3.2.0",
+    "js-cookie": "^2.2.1",
+    "query-string": "^6.13.7",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "react-loadable": "^5.5.0",
-    "react-redux": "^7.2.0",
+    "react-redux": "^7.2.2",
+    "react-resizable": "^1.11.0",
+    "react-router-config": "^5.1.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "4.0.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "socket.io": "^2.3.0",
-    "styled-components": "^5.1.0"
+    "socket.io-client": "2.3.0",
+    "styled-components": "^5.2.1",
+    "wangeditor": "^4.3.0"
   },
   "devDependencies": {
+    "babel-plugin-import": "^1.13.1",
     "cross-env": "^7.0.2",
-    "http-proxy-middleware": "^1.0.4"
+    "customize-cra": "^1.0.0",
+    "http-proxy-middleware": "^1.0.6",
+    "less": "^3.13.0",
+    "less-loader": "^7.1.0",
+    "react-app-rewired": "^2.1.6"
   },
   "scripts": {
-    "local": "cross-env REACT_APP_ENV=local PORT=8080 react-scripts start",
-    "build:dev": "cross-env REACT_APP_ENV=dev react-scripts build",
-    "build:qa": "cross-env REACT_APP_ENV=qa react-scripts build",
-    "build:stage": "cross-env REACT_APP_ENV=stage react-scripts build",
-    "build": "cross-env REACT_APP_ENV=prod react-scripts build",
-    "test": "react-scripts test",
+    "local": "cross-env REACT_APP_ENV=local PORT=8080 react-app-rewired start",
+    "build:dev": "cross-env REACT_APP_ENV=dev react-app-rewired build",
+    "build:qa": "cross-env REACT_APP_ENV=qa react-app-rewired build",
+    "build:stage": "cross-env REACT_APP_ENV=stage react-app-rewired build",
+    "build": "cross-env REACT_APP_ENV=prod react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app",
     "globals": {
-      "io": true
+      "io": true,
+      "$API": true
     }
   },
   "browserslist": {
